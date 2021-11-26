@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">RunningApp</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDvi3wJw7SNGVZ2yyqRiYv1aeD97eHeUYo</string>
+    <string name="your_name">Your Name</string>
+    <string name="your_weight">Your Weight</string>
+    <string name="total_distance">Total Distance</string>
+    <string name="total_time">Total Time</string>
+    <string name="total_calories_burned">Total Calories Burned</string>
+    <string name="average_speed">Average Speed</string>
+    <string name="running_app">Running App</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="fab">Fab</string>
+    <string name="apply_changes">Apply Changes</string>
+    <string name="intro">Welcome!\nPlease enter your name and weight.</string>
+    <string name="continue_string">Continue</string>
+    <string name="kg">kg</string>
+    <string name="start">Start</string>
+    <string name="finish_run">Finish Run</string>
+    <string name="let_s_go_username">Let\'s go, USERNAME!</string>
+    <string name="date">DATE</string>
+    <string name="time">TIME</string>
+    <string name="distance">DISTANCE</string>
+    <string name="avgspeed">AVGSPEED</string>
+    <string name="calories">CALORIES</string>
+    <string name="running_image">Running Image</string>
+    <string name="duration">DURATION</string>
+    <string name="calories_burned">CALORIES BURNED</string>
+    <string-array name="filter_options">
+        <item>Date</item>
+        <item>Running Time</item>
+        <item>Distance</item>
+        <item>Average Speed</item>
+        <item>Calories Burned</item>
+    </string-array>
+</resources>
