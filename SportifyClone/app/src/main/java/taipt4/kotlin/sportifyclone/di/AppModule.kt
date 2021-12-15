@@ -10,6 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import taipt4.kotlin.sportifyclone.R
+import taipt4.kotlin.sportifyclone.adapters.SwipeSongAdapter
+import taipt4.kotlin.sportifyclone.exoplayer.MusicServiceConnection
 import javax.inject.Singleton
 
 @Module
@@ -25,4 +27,14 @@ object AppModule {
             .error(R.drawable.ic_image)
             .diskCacheStrategy(DiskCacheStrategy.DATA)
     )
+
+    @Singleton
+    @Provides
+    fun provideSwipeSongAdapter() = SwipeSongAdapter()
+
+    @Singleton
+    @Provides
+    fun provideMusicServiceConnection(
+        @ApplicationContext context: Context
+    ) = MusicServiceConnection(context)
 }
