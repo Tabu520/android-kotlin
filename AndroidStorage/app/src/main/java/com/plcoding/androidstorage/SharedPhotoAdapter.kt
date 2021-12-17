@@ -12,14 +12,21 @@ class SharedPhotoAdapter(
     private val onPhotoClick: (SharedStoragePhoto) -> Unit
 ) : ListAdapter<SharedStoragePhoto, SharedPhotoAdapter.PhotoViewHolder>(Companion) {
 
-    inner class PhotoViewHolder(val binding: ItemPhotoBinding): RecyclerView.ViewHolder(binding.root)
+    inner class PhotoViewHolder(val binding: ItemPhotoBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     companion object : DiffUtil.ItemCallback<SharedStoragePhoto>() {
-        override fun areItemsTheSame(oldItem: SharedStoragePhoto, newItem: SharedStoragePhoto): Boolean {
+        override fun areItemsTheSame(
+            oldItem: SharedStoragePhoto,
+            newItem: SharedStoragePhoto
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: SharedStoragePhoto, newItem: SharedStoragePhoto): Boolean {
+        override fun areContentsTheSame(
+            oldItem: SharedStoragePhoto,
+            newItem: SharedStoragePhoto
+        ): Boolean {
             return oldItem == newItem
         }
     }
