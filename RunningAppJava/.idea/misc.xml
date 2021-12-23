@@ -3,7 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/drawable/ic_add_black.xml" value="0.35104166666666664" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/drawable/ic_close_white.xml" value="0.35104166666666664" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/drawable/ic_launcher_background.xml" value="0.35104166666666664" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/layout-land/fragment_statistics.xml" value="0.28350970017636684" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/layout-land/fragment_tracking.xml" value="0.28350970017636684" />
         <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/layout/activity_main.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/layout/fragment_run.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/layout/fragment_settings.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/layout/fragment_setup.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/layout/fragment_statistics.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/layout/fragment_tracking.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningAppJava/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33489583333333334" />
       </map>
     </option>
   </component>
