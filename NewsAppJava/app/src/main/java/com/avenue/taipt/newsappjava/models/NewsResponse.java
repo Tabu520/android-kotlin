@@ -6,7 +6,7 @@ public class NewsResponse {
 
     private ArrayList<Article> articles = new ArrayList<>();
     private String status;
-    private String totalResults;
+    private int totalResults;
 
     public ArrayList<Article> getArticles() {
         return articles;
@@ -24,11 +24,11 @@ public class NewsResponse {
         this.status = status;
     }
 
-    public String getTotalResults() {
+    public int getTotalResults() {
         return totalResults;
     }
 
-    public void setTotalResults(String totalResults) {
+    public void setTotalResults(int totalResults) {
         this.totalResults = totalResults;
     }
 }

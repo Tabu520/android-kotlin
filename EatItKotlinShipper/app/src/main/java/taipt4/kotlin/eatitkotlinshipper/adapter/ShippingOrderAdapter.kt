@@ -14,6 +14,7 @@ import taipt4.kotlin.eatitkotlinshipper.R
 import taipt4.kotlin.eatitkotlinshipper.common.Common
 import taipt4.kotlin.eatitkotlinshipper.model.ShippingOrderModel
 import java.text.SimpleDateFormat
+import java.util.*
 
 class ShippingOrderAdapter(
     var context: Context,
@@ -21,7 +22,7 @@ class ShippingOrderAdapter(
 ) :
     RecyclerView.Adapter<ShippingOrderAdapter.ShippingOrderViewHolder>() {
 
-    var sdf: SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+    var sdf: SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
 
     inner class ShippingOrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtDate: TextView = itemView.findViewById(R.id.txt_date)

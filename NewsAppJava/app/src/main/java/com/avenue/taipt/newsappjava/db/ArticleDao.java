@@ -15,7 +15,7 @@ import java.util.List;
 public interface ArticleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long upsert(Article article);
+    void upsert(Article article);
 
     @Query(value = "SELECT * FROM articles")
     LiveData<List<Article>> getAllArticles();

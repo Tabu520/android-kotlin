@@ -1,36 +1,38 @@
 package com.avenue.taipt.newsappjava.repository;
 
-import android.app.Application;
-
 import androidx.lifecycle.LiveData;
 
 import com.avenue.taipt.newsappjava.api.RetrofitInstance;
 import com.avenue.taipt.newsappjava.db.ArticleDatabase;
 import com.avenue.taipt.newsappjava.models.Article;
 import com.avenue.taipt.newsappjava.models.NewsResponse;
+import com.avenue.taipt.newsappjava.utils.AppExecutors;
 
 import java.util.List;
 
-import retrofit2.Response;
+import retrofit2.Call;
 
 public class NewsRepository {
 
     private final ArticleDatabase db;
+    private AppExecutors mAppExecutors;
 
-    public NewsRepository(ArticleDatabase db) {
+    public NewsRepository(ArticleDatabase db, AppExecutors appExecutors) {
         this.db = db;
+        this.mAppExecutors = appExecutors;
     }
 
-    public Response<NewsResponse> getBreakingNews(String countryCode, int pageNumber, String apiKey) {
+    public Call<NewsResponse> getBreakingNews(String countryCode, int pageNumber, String apiKey) {
         return RetrofitInstance.getNewsApi().getBreakingNews(countryCode, pageNumber, apiKey);
     }
 
-    public Response<NewsResponse> searchNews(String countryCode, int pageNumber, String apiKey) {
-        return RetrofitInstance.getNewsApi().searchForNews(countryCode, pageNumber, apiKey);
+    public Call<NewsResponse> searchNews(String searchQuery, int pageNumber, String apiKey) {
+        return RetrofitInstance.getNewsApi().searchForNews(searchQuery, pageNumber, apiKey);
     }
 
-    public long upsert(Article article) {
-        return db.articleDao().upsert(article);
+    public void upsert(Article article) {
+        Runnable upsertRunnable = () -> db.articleDao().upsert(article);
+        mAppExecutors.diskIO().execute(upsertRunnable);
     }
 
     public LiveData<List<Article>> getSavedNews() {
@@ -38,6 +40,7 @@ public class NewsRepository {
     }
 
     public void deleteArticle(Article article) {
-        db.articleDao().deleteArticle(article);
+        Runnable deleteArticleRunnable = () -> db.articleDao().deleteArticle(article);
+        mAppExecutors.diskIO().execute(deleteArticleRunnable);
     }
 }
