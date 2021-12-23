@@ -39,6 +39,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ArticleViewHol
 
     private AsyncListDiffer<Article> differ = new AsyncListDiffer<>(this, differCallback);
 
+    public AsyncListDiffer<Article> getDiffer() {
+        return this.differ;
+    }
+
     @NonNull
     @Override
     public NewsAdapter.ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

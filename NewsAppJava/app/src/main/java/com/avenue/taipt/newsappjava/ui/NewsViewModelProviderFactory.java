@@ -13,11 +13,8 @@ public class NewsViewModelProviderFactory implements ViewModelProvider.Factory {
     @NonNull
     private final Application application;
 
-    private final NewsRepository newsRepository;
-
-    public NewsViewModelProviderFactory(@NonNull Application application, NewsRepository newsRepository) {
+    public NewsViewModelProviderFactory(@NonNull Application application) {
         this.application = application;
-        this.newsRepository = newsRepository;
     }
 
 
@@ -25,7 +22,7 @@ public class NewsViewModelProviderFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> aClass) {
         if (aClass == NewsViewModel.class) {
-            return (T) new NewsViewModel(application, newsRepository);
+            return (T) new NewsViewModel(application);
         }
         return null;
     }
