@@ -1,7 +1,5 @@
 package com.avenue.taipt.newsappjava.utils;
 
-import java.util.List;
-
 public class Resource<T> {
 
     protected String message;
@@ -50,9 +48,4 @@ public class Resource<T> {
             super();
         }
     }
-
-//    class Success<T>(data: T) : Resource<T>(data)
-//    class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
-//    class Loading<T> : Resource<T>()
-
 }

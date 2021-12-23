@@ -2,6 +2,7 @@ package com.avenue.taipt.runningappjava.di;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
@@ -31,7 +32,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public RunDao provideRunDao(RunningDatabase db) {
+    public RunDao provideRunDao(@NonNull RunningDatabase db) {
         return db.runDao();
     }
 
