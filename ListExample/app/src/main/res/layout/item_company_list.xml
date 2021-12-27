@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/upper_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/upper_line"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        android:src="@drawable/ic_baseline_how_to_reg_24" />
+
+    <TextView
+        android:id="@+id/txt_company_name"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_toEndOf="@id/iv_icon"
+        android:layout_below="@id/upper_line"
+        android:gravity="center"
+        android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:text="aaksfhaskjfhakj"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ivGroupIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/group_indicator" />
+
+</RelativeLayout>

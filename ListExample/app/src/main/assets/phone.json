@@ -1,0 +1,79 @@
+{
+  "companies": [
+    {
+      "name": "LG",
+      "devices": [
+        {
+          "name": "LG V10"
+        },
+        {
+          "name": "LG G4 Stylus"
+        },
+        {
+          "name": "LG G4"
+        },
+        {
+          "name": "LG Magna"
+        },
+        {
+          "name": "LG L60"
+        },
+        {
+          "name": "LG L Fino"
+        },
+        {
+          "name": "LG L80 2 sim"
+        }
+      ]
+    },
+    {
+      "name": "Samsung",
+      "devices": [
+        {
+          "name": "Galaxy Note5"
+        },
+        {
+          "name": "Galaxy Note4"
+        },
+        {
+          "name": "Galaxy S7 edge - Injustice"
+        },
+        {
+          "name": "Galaxy S7 edge"
+        },
+        {
+          "name": "Galaxy S7"
+        },
+        {
+          "name": "Galaxy S6 edge+"
+        },
+        {
+          "name": "Galaxy S6 edge+"
+        }
+      ]
+    },
+    {
+      "name": "Sony",
+      "devices": [
+        {
+          "name": "Xperia XZ"
+        },
+        {
+          "name": "Xperis XA Ultra"
+        },
+        {
+          "name": "Xperia X"
+        },
+        {
+          "name": "Xperia Z5 Premium Dual"
+        },
+        {
+          "name": "Xperia Z5 Compact"
+        },
+        {
+          "name": "Xperia Z5 Dual"
+        }
+      ]
+    }
+  ]
+}
