@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_co_home"
+        android:title="@string/menu_home" />
+    <item android:title="@string/menu_logbook">
+        <menu>
+            <item
+                android:id="@+id/nav_template"
+                android:icon="@drawable/ic_co_news"
+                android:title="@string/menu_new_logbook" />
+            <item
+                android:id="@+id/nav_list_book"
+                android:icon="@drawable/ic_co_folder"
+                android:title="@string/menu_list_logbook" />
+        </menu>
+    </item>
+    <item android:title="@string/menu_logsheet">
+        <menu>
+            <item
+                android:id="@+id/nav_logsheet_templates"
+                android:icon="@drawable/ic_co_document"
+                android:title="@string/menu_new_logsheet" />
+            <item
+                android:id="@+id/nav_list_sheet"
+                android:icon="@drawable/ic_co_folder"
+                android:title="@string/menu_list_logsheet" />
+        </menu>
+    </item>
+    <item android:title="@string/menu_app">
+        <menu>
+            <item
+                android:id="@+id/nav_manpowers"
+                android:icon="@drawable/ic_co_contact"
+                android:title="@string/menu_manpowers" />
+        </menu>
+    </item>
+    <item android:title="@string/menu_system">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_co_setting"
+                android:title="@string/menu_settings" />
+            <item
+                android:id="@+id/nav_ablout"
+                android:icon="@drawable/ic_co_info"
+                android:title="@string/menu_about"
+                android:visible="false" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_co_restart"
+                android:title="@string/menu_logout" />
+        </menu>
+    </item>
+</menu>

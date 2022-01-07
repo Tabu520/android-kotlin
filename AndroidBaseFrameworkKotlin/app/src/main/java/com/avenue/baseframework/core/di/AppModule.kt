@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.avenue.baseframework.core.db.AppDatabase
 import com.avenue.baseframework.core.helpers.AppSettings
+import com.avenue.baseframework.core.helpers.AppSize
 import com.avenue.baseframework.core.helpers.Constants
 import com.avenue.baseframework.core.helpers.Constants.SHARED_PREFERENCES_NAME
 import com.avenue.baseframework.core.models.UserSettings
@@ -71,5 +72,9 @@ object AppModule {
     @Singleton
     @Provides
     fun provideAppSettings() = AppSettings()
+
+    @Singleton
+    @Provides
+    fun provideAppSize() = AppSize()
 
 }
