@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">AndroidBaseFramework</string>
+
+    <!--ANSWER BUTTON-->
+    <string name="ok">Đồng ý</string>
+    <string name="cancel">Hủy</string>
+
+    <!--SERVER-->
+    <string name="dialog_invalid_token">Your session expired. Please login again.</string>
+    <string name="warning_login_setting_configure">Bạn có muốn thay đổi cấu hình không?</string>
+    <string name="error_network_failed">Lỗi kết nối máy chủ Maximo, vui lòng thử lại</string>
+
+    <!--LOGIN-->
+    <string name="logo_name">elogbook</string>
+    <string name="user_name">Tên đăng nhập</string>
+    <string name="password">Mật khẩu</string>
+    <string name="login">Đăng nhập</string>
+    <string name="host">Máy chủ</string>
+    <string name="port">Cổng API</string>
+    <string name="web_port">Cổng Web</string>
+    <string name="start">Bắt đầu</string>
+    <string name="error_required">Bắt buộc</string>
+    <string name="error_login_no_logininfo">Bạn cần kết nối Maximo trong lần đầu đăng nhập</string>
+    <string name="error_login_failed">Tên đăng nhập hoặc mật khẩu chưa đúng</string>
+
+    <!--MENU-->
+    <string name="menu_home">Trang chủ</string>
+    <string name="menu_new_logbook">Ghi Logbook</string>
+    <string name="menu_new_logsheet">Ghi LogSheet</string>
+    <string name="menu_list_logbook">Xem Logbook</string>
+    <string name="menu_list_logsheet">Xem LogSheet</string>
+    <string name="menu_logbook">Logbook</string>
+    <string name="menu_logsheet">LogSheet</string>
+    <string name="menu_app">Ứng dụng khác</string>
+    <string name="menu_manpowers">Nhân sự</string>
+    <string name="menu_templates">Biểu mẫu</string>
+    <string name="menu_settings">Cấu hình</string>
+    <string name="menu_about">Thông tin</string>
+    <string name="menu_logout">Đăng xuất</string>
+    <string name="menu_system">Hệ thống</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="copy_right">Avenue JSC</string>
+    <string name="version">Version</string>
+
+    <!--SYSTEM GENERATED-->
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <!-- for datetime utils -->
+    <string name="time_ago_now">few moments ago</string>
+    <string name="time_ago_full_seconds">%1$d seconds ago</string>
+    <string name="time_ago_full_minute">%1$d minute ago</string>
+    <string name="time_ago_full_minutes">%1$d minutes ago</string>
+    <string name="time_ago_full_hour">%1$d hour ago</string>
+    <string name="time_ago_full_hours">%1$d hours ago</string>
+    <string name="time_ago_full_yesterday_at">Yesterday at %1$s</string>
+    <string name="time_ago_full_days">%1$d days ago</string>
+    <string name="time_ago_full_month">%1$d month ago</string>
+    <string name="time_ago_full_months">%1$d months ago</string>
+
+    <string name="time_ago_seconds">%1$d sec ago</string>
+    <string name="time_ago_minute">%1$d min ago</string>
+    <string name="time_ago_minutes">%1$d min ago</string>
+    <string name="time_ago_hour">%1$d h ago</string>
+    <string name="time_ago_hours">%1$d h ago</string>
+    <string name="time_ago_yesterday_at">Yesterday at %1$s</string>
+    <string name="time_ago_days">%1$d d ago</string>
+    <string name="time_ago_month">%1$d m ago</string>
+    <string name="time_ago_months">%1$d m ago</string>
+    <string name="error_no_network">Lỗi mạng, vui lòng kiểm tra WIFI/4G.</string>
+    <string name="error_update">Có lỗi khi cập nhật, thử lại sau</string>
+    <string name="initialize">Đang khởi tạo dữ liệu...</string>
+
+    <!--GENERATE-->
+    <string name="sync_data">Đồng bộ dữ liệu</string>
+
+    <!--SYNC-->
+    <string name="logsheet">Logsheet</string>
+    <string name="logbook">Logbook</string>
+    <string name="did_sync">Đã đồng bộ:</string>
+    <string name="counting">Số lượng:</string>
+    <string name="other_data">Dữ liệu khác</string>
+
+    <string name="sliding_effect_duration" translatable="false">500</string>
+
+    <!-- Dialog pick date/time -->
+    <string name="title_dialog_datetime_picker">Pick Date Time</string>
+    <string name="set">Set</string>
+
+    <!-- NFC -->
+    <string name="nfc_tag_scanning">Scanning</string>
+
+    <!-- DATE/TIME PREF-->
+    <string name="pref_title_user_inactivity_duration">User Inactivity Duration</string>
+    <string name="pref_key_user_inactivity_duration">user_inactivity_duration</string>
+    <string name="pref_default_value_user_inactivity_duration">120</string>
+    <string name="pref_title_day_shift_start">Day Shift Start Hour</string>
+    <string name="pref_key_day_shift_start">pref_key_day_shift_start</string>
+    <string name="pref_default_day_shift_start">"07:00"</string>
+    <string name="pref_title_day_shift_end">Day Shift End Hour</string>
+    <string name="pref_key_day_shift_end">pref_key_day_shift_end</string>
+    <string name="pref_default_day_shift_end">"18:59"</string>
+</resources>
