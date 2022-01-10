@@ -18,8 +18,9 @@ import kotlin.experimental.and
 
 object NetUtils {
 
-    fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    fun isNetworkAvailable(): Boolean {
+        val connectivityManager = BaseApplication.getContext()
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val nw = connectivityManager.activeNetwork ?: return false
         val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
         return when {
@@ -125,10 +126,11 @@ object NetUtils {
                         } else {
                             if (!isIPv4) {
                                 val delim = sAddr.indexOf('%') // drop ip6 zone suffix
-                                ipaddress = if (delim < 0) sAddr.uppercase(Locale.getDefault()) else sAddr.substring(
-                                    0,
-                                    delim
-                                ).uppercase(Locale.getDefault())
+                                ipaddress =
+                                    if (delim < 0) sAddr.uppercase(Locale.getDefault()) else sAddr.substring(
+                                        0,
+                                        delim
+                                    ).uppercase(Locale.getDefault())
                             }
                         }
                     }

@@ -1,5 +1,6 @@
 package com.avenue.baseframework.core.ui.activities.main
 
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Insets
 import android.os.Build
@@ -14,6 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.avenue.baseframework.R
 import com.avenue.baseframework.core.helpers.AppSize
+import com.avenue.baseframework.core.helpers.Constants
+import com.avenue.baseframework.core.receivers.NetworkChangeReceiver
 import com.avenue.baseframework.core.ui.activities.BaseActivity
 import com.avenue.baseframework.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
@@ -26,6 +29,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var binding: ActivityMainBinding
 
     private var mAppBarConfiguration: AppBarConfiguration? = null
+    private var networkChangeReceiver: NetworkChangeReceiver? = null
 
     @Inject
     lateinit var appSize: AppSize
@@ -126,14 +130,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun registerUpdateReceiver() {
-//        networkChangeReceiver = NetworkChangeReceiver()
-//        val intentFilter = IntentFilter()
-//        intentFilter.addAction(Constants.ACTION_CONNECTIVITY_CHANGE)
-//        registerReceiver(networkChangeReceiver, intentFilter)
+        networkChangeReceiver = NetworkChangeReceiver()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(Constants.ACTION_CONNECTIVITY_CHANGE)
+        registerReceiver(networkChangeReceiver, intentFilter)
     }
 
     private fun unregisterUpdateReceiver() {
-//        unregisterReceiver(networkChangeReceiver)
+        unregisterReceiver(networkChangeReceiver)
     }
 
     private fun setSoftInputMode() {

@@ -15,14 +15,21 @@
         <entry key="app/src/main/res/drawable-v24/horizontal_dashed_line.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/font/font_open_sans.xml" value="0.33541666666666664" />
         <entry key="app/src/main/res/layout/activity_base.xml" value="0.2653985507246377" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2653985507246377" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2653985507246377" />
+        <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2653985507246377" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2653985507246377" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.2653985507246377" />
+        <entry key="app/src/main/res/layout/app_bar_main_navigation.xml" value="0.2653985507246377" />
         <entry key="app/src/main/res/layout/button_blue.xml" value="0.24320652173913043" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2653985507246377" />
+        <entry key="app/src/main/res/layout/content_main_navigation.xml" value="0.2653985507246377" />
         <entry key="app/src/main/res/layout/fragment_base.xml" value="0.2653985507246377" />
         <entry key="app/src/main/res/layout/layout_dialog_input.xml" value="0.2653985507246377" />
+        <entry key="app/src/main/res/layout/menu_item_childgroup.xml" value="0.18297101449275363" />
+        <entry key="app/src/main/res/layout/menu_item_parentgroup.xml" value="0.2653985507246377" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.2653985507246377" />
+        <entry key="app/src/main/res/layout/nav_header_main_navigation.xml" value="0.2653985507246377" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.30520833333333336" />
         <entry key="app/src/main/res/menu/main.xml" value="0.30520833333333336" />
       </map>

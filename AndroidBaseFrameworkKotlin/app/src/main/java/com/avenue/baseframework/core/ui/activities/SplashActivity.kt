@@ -6,6 +6,7 @@ import android.widget.ImageView
 import com.avenue.baseframework.R
 import com.avenue.baseframework.core.helpers.EString
 import com.avenue.baseframework.core.models.UserSettings
+import com.avenue.baseframework.core.ui.activities.main.MainActivity2
 import com.avenue.baseframework.databinding.ActivitySplashBinding
 import com.avenue.baseframework.restclient.RestConnector
 import com.avenue.baseframework.restclient.utils.RestOptions

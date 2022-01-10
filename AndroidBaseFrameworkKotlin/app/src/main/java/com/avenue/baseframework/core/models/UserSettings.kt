@@ -11,19 +11,20 @@ import com.avenue.baseframework.core.BaseApplication
 import com.avenue.baseframework.core.helpers.Constants
 import com.avenue.baseframework.core.helpers.EString
 import com.avenue.baseframework.core.helpers.TEA
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 class UserSettings @Inject constructor() {
 
     private var context: Context? = null
 
-    @Inject
-    lateinit var sharedPref: SharedPreferences
+    var sharedPref: SharedPreferences
 
     private var editor: Editor? = null
 
     init {
         context = BaseApplication.getContext()
+        sharedPref = context!!.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         editor = sharedPref.edit()
     }
 

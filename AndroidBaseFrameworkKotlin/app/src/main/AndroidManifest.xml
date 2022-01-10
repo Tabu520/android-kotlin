@@ -25,6 +25,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".core.ui.activities.login.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".core.ui.activities.main.MainActivity2"
             android:exported="false" />
         <activity
