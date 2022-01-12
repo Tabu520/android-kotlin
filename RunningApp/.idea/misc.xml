@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningApp/app/src/main/res/layout/activity_main.xml" value="0.11727456940222898" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningApp/app/src/main/res/layout/fragment_run.xml" value="0.23777173913043478" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningApp/app/src/main/res/layout/fragment_settings.xml" value="0.23777173913043478" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningApp/app/src/main/res/layout/fragment_setup.xml" value="0.23777173913043478" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningApp/app/src/main/res/layout/fragment_statistics.xml" value="0.23777173913043478" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningApp/app/src/main/res/layout/fragment_tracking.xml" value="0.23777173913043478" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/RunningApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.24114583333333334" />
         <entry key="..\:/OtherProject/RunningApp/app/src/main/res/drawable/bottom_nav_selector.xml" value="0.33697916666666666" />
         <entry key="..\:/OtherProject/RunningApp/app/src/main/res/drawable/ic_add_black.xml" value="0.35104166666666664" />
         <entry key="..\:/OtherProject/RunningApp/app/src/main/res/layout-land/fragment_statistics.xml" value="0.2604166666666667" />

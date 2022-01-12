@@ -11,6 +11,7 @@ import com.avenue.baseframework.core.helpers.AppSize
 import com.avenue.baseframework.core.helpers.Constants
 import com.avenue.baseframework.core.helpers.Constants.SHARED_PREFERENCES_NAME
 import com.avenue.baseframework.core.models.UserSettings
+import com.avenue.baseframework.core.pereference.TimePreference
 import com.avenue.baseframework.restclient.RestConnector
 import dagger.Module
 import dagger.Provides

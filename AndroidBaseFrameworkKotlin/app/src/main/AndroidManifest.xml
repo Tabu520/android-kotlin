@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.avenue.baseframework">
+    package="com.avenue.baseframework" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -13,6 +13,10 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.NFC" />
 
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
     <application
         android:name=".core.BaseApplication"
         android:allowBackup="true"
@@ -23,7 +27,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidBaseFramework"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning" >
+        <activity
+            android:name=".core.ui.activities.network.NetworkActivity"
+            android:exported="false" />
         <activity
             android:name=".core.ui.activities.login.LoginActivity"
             android:exported="false" />
@@ -32,7 +39,7 @@
             android:exported="false" />
         <activity
             android:name=".core.ui.activities.SplashActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,6 +52,15 @@
         <activity
             android:name=".core.ui.activities.main.MainActivity"
             android:exported="true" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

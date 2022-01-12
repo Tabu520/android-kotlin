@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/dialog_single_choice_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:dividerHeight="0dp"
+            android:fadeScrollbars="false"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog_single_choice_button_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_dialog_single_choice_ok"
+            style="@style/CommonButtonDarkDialog"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/btn_dialog_single_choice_cancel"
+            style="@style/CommonButtonDarkDialog"
+            android:text="@string/cancel" />
+    </LinearLayout>
+</LinearLayout>

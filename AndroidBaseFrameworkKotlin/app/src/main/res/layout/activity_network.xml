@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".core.ui.activities.network.NetworkActivity">
+
+    <LinearLayout
+        android:id="@+id/layoutLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_marginTop="40dp"
+        android:minWidth="64dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/textViewLogo"
+            style="@style/TextLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="eLogbook" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageViewHost"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:src="@drawable/outline_computer_24"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutHost"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/layoutHost"
+        app:layout_constraintTop_toTopOf="@id/layoutHost" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutHost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/top_margin"
+        android:layout_marginRight="@dimen/normal_margin"
+        app:layout_constraintLeft_toRightOf="@id/imageViewHost"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutLogo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextHost"
+            style="@style/TextNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/host"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/imageViewPort"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:src="@drawable/outline_device_hub_24"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutPort"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/layoutPort"
+        app:layout_constraintTop_toTopOf="@id/layoutPort" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutPort"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/double_margin"
+        android:layout_marginRight="@dimen/normal_margin"
+        app:layout_constraintLeft_toRightOf="@id/imageViewPort"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutHost">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPort"
+            style="@style/TextNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/port"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/imageButtonVisible"
+        android:layout_width="@dimen/button_size_large"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/double_margin"
+        android:background="@color/transparent"
+        android:src="@drawable/outline_visibility_24"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutPort"
+        app:layout_constraintRight_toRightOf="@+id/layoutPort"
+        app:layout_constraintTop_toTopOf="@id/layoutPort" />
+
+    <ImageView
+        android:id="@+id/imageViewWebPort"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:src="@drawable/outline_device_hub_24"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutWebPort"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/layoutPort"
+        app:layout_constraintTop_toTopOf="@id/layoutWebPort" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutWebPort"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/double_margin"
+        android:layout_marginRight="@dimen/normal_margin"
+        app:layout_constraintLeft_toRightOf="@id/imageViewPort"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutPort">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextWebPort"
+            style="@style/TextNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/web_port"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/buttonStart"
+        style="@style/ButtonRed"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="64dp"
+        android:onClick="onButtonClicked"
+        android:text="@string/start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutWebPort"
+        app:layout_constraintVertical_bias="0.2"
+        tools:ignore="OnClick" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/buttonStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

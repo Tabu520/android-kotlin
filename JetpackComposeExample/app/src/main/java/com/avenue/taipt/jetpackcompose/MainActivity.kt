@@ -77,19 +77,34 @@ class MainActivity : ComponentActivity() {
 //            }
 //        }
 
+        // Card: Image with Text and Gradient color //
+//        setContent {
+//            val painter = painterResource(id = R.drawable.cat)
+//            val description = "A cute cat"
+//            val title = "A cute white cat"
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth(0.5f)
+//                    .padding(16.dp)
+//            ) {
+//                ImageCard(
+//                    painter = painter,
+//                    contentDescription = description,
+//                    title = title
+//                )
+//            }
+//        }
+
         setContent {
-            val painter = painterResource(id = R.drawable.cat)
-            val description = "A cute cat"
-            val title = "A cute white cat"
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(16.dp)
+                    .fillMaxSize()
+                    .background(Color(0xFF101010))
             ) {
-                ImageCard(
-                    painter = painter,
-                    contentDescription = description,
-                    title = title
+                Text(
+                    text = "Jetpack Compose",
+                    color = Color.White,
+                    fontSize = 30.sp
                 )
             }
         }

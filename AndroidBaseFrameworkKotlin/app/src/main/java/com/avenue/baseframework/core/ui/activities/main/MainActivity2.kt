@@ -6,8 +6,6 @@ import android.util.SparseArray
 import android.view.MenuItem
 import android.view.View
 import android.widget.ExpandableListView
-import android.widget.ExpandableListView.OnChildClickListener
-import android.widget.ExpandableListView.OnGroupClickListener
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -17,9 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.avenue.baseframework.R
 import com.avenue.baseframework.core.adapters.MenuExpandableListviewAdapter
+import com.avenue.baseframework.core.helpers.ChooseFragmentHelper
 import com.avenue.baseframework.core.models.MenuModel
 import com.avenue.baseframework.core.models.ResponseMenuJson
 import com.avenue.baseframework.core.ui.activities.BaseActivity
+import com.avenue.baseframework.core.ui.activities.login.LoginActivity
 import com.avenue.baseframework.core.utils.StringUtils
 import com.avenue.baseframework.databinding.ActivityMain2Binding
 import com.google.android.material.navigation.NavigationView
@@ -172,7 +172,7 @@ class MainActivity2 : BaseActivity(), NavigationView.OnNavigationItemSelectedLis
         var _fragment: Fragment? = null
         when (menuCode) {
             "mSystem_Logout" -> logout()
-            else -> _fragment = ChooseFragmentHelper.GetFragmentByMenuItem(menuCode)
+            else -> _fragment = ChooseFragmentHelper.getFragmentByMenuItem(menuCode)
         }
         if (menuCode != "mSystem_Logout") {
             loadFragment(_fragment, menuName)

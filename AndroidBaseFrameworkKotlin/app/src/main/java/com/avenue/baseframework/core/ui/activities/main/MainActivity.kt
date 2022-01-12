@@ -18,6 +18,7 @@ import com.avenue.baseframework.core.helpers.AppSize
 import com.avenue.baseframework.core.helpers.Constants
 import com.avenue.baseframework.core.receivers.NetworkChangeReceiver
 import com.avenue.baseframework.core.ui.activities.BaseActivity
+import com.avenue.baseframework.core.ui.activities.login.LoginActivity
 import com.avenue.baseframework.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint

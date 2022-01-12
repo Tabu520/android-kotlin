@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:title="@string/pref_title_user_inactivity_duration"
+        android:key="@string/pref_key_user_inactivity_duration"
+        android:entries="@array/AutoSignOut"
+        android:entryValues="@array/AutoSignOut_Data"
+        android:defaultValue="@string/pref_default_value_user_inactivity_duration" />
+    <com.avenue.baseframework.core.pereference.TimePreference
+        android:title="@string/pref_title_day_shift_start"
+        android:key="@string/pref_key_day_shift_start"
+        android:defaultValue="@string/pref_default_day_shift_start"/>
+    <com.avenue.baseframework.core.pereference.TimePreference
+        android:title="@string/pref_title_day_shift_end"
+        android:key="@string/pref_key_day_shift_end"
+        android:defaultValue="@string/pref_default_day_shift_end"/>
+</PreferenceScreen>

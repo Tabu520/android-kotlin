@@ -7,6 +7,8 @@ import android.content.Intent
 import android.net.wifi.WifiManager
 import android.widget.Toast
 import com.avenue.baseframework.core.helpers.Constants
+import com.avenue.baseframework.core.ui.activities.version.AppVersionActivity
+import com.avenue.baseframework.core.ui.activities.version.UpdateAppVersion
 import com.avenue.baseframework.core.utils.NetUtils
 
 class NetworkChangeReceiver: BroadcastReceiver() {
@@ -21,7 +23,7 @@ class NetworkChangeReceiver: BroadcastReceiver() {
                         val mActivityManager =
                             it.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
                         val topActivity = mActivityManager.appTasks[0].taskInfo.topActivity!!.className
-                        if (topActivity != AppVersionActivity::class.java.getName()) {
+                        if (topActivity != AppVersionActivity::class.java.name) {
                             val updateAppVersion = UpdateAppVersion(it)
                             updateAppVersion.checkAppVersion()
                         }

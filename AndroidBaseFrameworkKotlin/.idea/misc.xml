@@ -3,6 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/drawable-v24/button_positive_background.xml" value="0.35104166666666664" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/drawable-v24/common_button_background_dark.xml" value="0.35104166666666664" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/activity_login.xml" value="0.1852355072463768" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/activity_network.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/bottomsheet_dialog.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/dialog_alert.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/dialog_datetime_picker.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/dialog_loading.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/dialog_nfc_scanning.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/dialog_single_choice.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/dialog_single_choice_list.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/layout/fragment_home.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/xml/pref_date_time.xml" value="0.33489583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/AndroidBaseFrameworkKotlin/app/src/main/res/xml/provider_paths.xml" value="0.9330543933054394" />
         <entry key="app/src/main/res/drawable-v24/button_blue.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/drawable-v24/button_negative_background.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/drawable-v24/button_positive_background.xml" value="0.32135416666666666" />
