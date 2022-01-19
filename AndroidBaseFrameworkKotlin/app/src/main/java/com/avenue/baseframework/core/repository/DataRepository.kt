@@ -9,14 +9,10 @@ import com.avenue.baseframework.core.db.entity.XMLTemplateEntity
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
-    private val appDatabase: AppDatabase
+    private val appDatabase: AppDatabase,
+    private val loginInfoDao: LoginInfoDao,
+    private val xmlTemplateDao: XMLTemplateDao
 ) {
-
-    @Inject
-    lateinit var loginInfoDao: LoginInfoDao
-
-    @Inject
-    lateinit var xmlTemplateDao: XMLTemplateDao
 
     var mObservableLSTemplatesList: MediatorLiveData<List<XMLTemplateEntity>> = MediatorLiveData()
 
