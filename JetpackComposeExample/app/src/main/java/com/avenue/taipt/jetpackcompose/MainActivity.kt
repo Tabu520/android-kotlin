@@ -291,9 +291,25 @@ class MainActivity : ComponentActivity() {
 //        }
 
         //--- part 10: Side Effects & Effect Handlers ---//
-        setContent {
+//        setContent {
+//
+//        }
+    }
+}
 
-        }
+@Preview
+@Composable
+fun ImageCardPreview() {
+    Button(onClick = { /*TODO*/ }) {
+        Text(text = "Click me")
+    }
+}
+
+@Preview
+@Composable
+fun ImageCardPreview2() {
+    Button(onClick = { /*TODO*/ }) {
+        Text(text = "Click me")
     }
 }
 
