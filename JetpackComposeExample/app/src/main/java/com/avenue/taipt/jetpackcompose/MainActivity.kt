@@ -15,6 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -22,13 +24,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInteropFilter
@@ -387,36 +389,57 @@ class MainActivity : ComponentActivity() {
 //        }
 
         //--- part 13: Draggable Music Knob ---//
+//        setContent {
+//            Box(
+//                contentAlignment = Alignment.Center,
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .background(Color(0xFF101010))
+//            ) {
+//                Row(
+//                    horizontalArrangement = Arrangement.Center,
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    modifier = Modifier
+//                        .border(1.dp, Color.Green, RoundedCornerShape(10.dp))
+//                        .padding(30.dp)
+//                ) {
+//                    var volume by remember {
+//                        mutableStateOf(0f)
+//                    }
+//                    val barCount = 20
+//                    MusicKnob(
+//                        modifier = Modifier.size(100.dp)
+//                    ) {
+//                        volume = it
+//                    }
+//                    Spacer(modifier = Modifier.width(20.dp))
+//                    VolumeBar(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(30.dp),
+//                        activeBars = (barCount * volume).roundToInt(),
+//                        barCount = barCount
+//                    )
+//                }
+//            }
+//        }
+
+        //--- part 16: 3D Animated Drop Down ---//
         setContent {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color(0xFF101010))
+            Surface(
+                color = Color(0xFF101010),
+                modifier = Modifier.fillMaxSize()
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .border(1.dp, Color.Green, RoundedCornerShape(10.dp))
-                        .padding(30.dp)
+                DropDown(
+                    text = "Hello World!",
+                    modifier = Modifier.padding(15.dp)
                 ) {
-                    var volume by remember {
-                        mutableStateOf(0f)
-                    }
-                    val barCount = 20
-                    MusicKnob(
-                        modifier = Modifier.size(100.dp)
-                    ) {
-                        volume = it
-                    }
-                    Spacer(modifier = Modifier.width(20.dp))
-                    VolumeBar(
+                    Text(
+                        text = "This is now revealed!",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(30.dp),
-                        activeBars = (barCount * volume).roundToInt(),
-                        barCount = barCount
+                            .height(100.dp)
+                            .background(Color.Green)
                     )
                 }
             }
@@ -489,8 +512,6 @@ fun ColorBox(
         }
     )
 }
-
-var i = 0
 
 @Composable
 fun MyComposable(backPressedDispatcher: OnBackPressedDispatcher) {
@@ -644,4 +665,62 @@ fun MusicKnob(
             }
             .rotate(rotation)
     )
+}
+
+@Composable
+fun DropDown(
+    text: String,
+    modifier: Modifier = Modifier,
+    initiallyOpened: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    var isOpen by remember {
+        mutableStateOf(initiallyOpened)
+    }
+    val alpha = animateFloatAsState(
+        targetValue = if (isOpen) 1f else 0f,
+        animationSpec = tween(
+            durationMillis = 300
+        )
+    )
+    val rotateX = animateFloatAsState(
+        targetValue = if (isOpen) 0f else -90f,
+        animationSpec = tween(
+            durationMillis = 300
+        )
+    )
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = text, color = Color.White, fontSize = 16.sp)
+            Icon(imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = "Open or close the dropdown",
+                tint = Color.White,
+                modifier = Modifier
+                    .clickable {
+                        isOpen = !isOpen
+                    }
+                    .scale(1f, if (isOpen) -1f else 1f)
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer {
+                    transformOrigin = TransformOrigin(0.5f, 0f)
+                    rotationX = rotateX.value
+                }
+                .alpha(alpha = alpha.value)
+        ) {
+            content()
+        }
+    }
 }
