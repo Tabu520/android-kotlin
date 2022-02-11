@@ -3,6 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/drawable-anydpi/ic_action_name.xml" value="0.145" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/drawable/button_background.xml" value="0.145" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/layout-land/activity_main.xml" value="0.22" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/layout-land/content_main.xml" value="0.20414462081128748" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/layout/activity_date_picker.xml" value="0.24114583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/layout/activity_main.xml" value="0.24114583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/layout/activity_order.xml" value="0.33" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/layout/activity_scorekeeper.xml" value="0.24114583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/layout/content_main.xml" value="0.24114583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/menu/menu_main.xml" value="0.24114583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/menu/menu_scorekeeper.xml" value="0.24114583333333334" />
+        <entry key="..\:/OtherProject/AndroidKotlin/android-kotlin/L4UserInteraction/app/src/main/res/menu/menu_text.xml" value="0.24114583333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2911458333333333" />
         <entry key="app/src/main/res/layout/activity_order.xml" value="0.30520833333333336" />
       </map>

@@ -18,9 +18,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,9 +44,8 @@ fun ProfileScreen() {
     }
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
-            name = "philipplackner_official",
-            modifier = Modifier
-                .padding(10.dp)
+            name = "Tai Pham",
+            modifier = Modifier.padding(10.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
         ProfileSection()
@@ -125,9 +122,9 @@ fun TopBar(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
+
         Icon(
             imageVector = Icons.Default.ArrowBack,
             contentDescription = "Back",
@@ -150,7 +147,7 @@ fun TopBar(
             painter = painterResource(id = R.drawable.ic_dotmenu),
             contentDescription = "Back",
             tint = Color.Black,
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier.size(24.dp)
         )
     }
 }
@@ -159,6 +156,7 @@ fun TopBar(
 fun ProfileSection(
     modifier: Modifier = Modifier
 ) {
+
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -173,18 +171,18 @@ fun ProfileSection(
                     .weight(3f)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            StatSection(modifier = Modifier.weight(7f))
+            StatSection(
+                modifier = Modifier.weight(7f)
+            )
         }
-        ProfileDescription(
-            displayName = "Programming Mentor",
-            description = "10 years of coding experience\n" +
-                    "Want me to make your app? Send me an email!\n" +
-                    "Subscribe to my YouTube channel!",
-            url = "https://youtube.com/c/PhilippLackner",
-            followedBy = listOf("codinginflow", "miakhalifa"),
-            otherCount = 17
-        )
     }
+    ProfileDescription(
+        displayName = "Android Dev",
+        description = "Android Developer in Avenue",
+        url = "https://google.com",
+        followedBy = listOf("quyenxquyen", "tafibuwaj"),
+        otherCount = 23
+    )
 }
 
 @Composable
@@ -214,9 +212,9 @@ fun StatSection(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = modifier
     ) {
-        ProfileStat(numberText = "601", text = "Posts")
-        ProfileStat(numberText = "100K", text = "Followers")
-        ProfileStat(numberText = "72", text = "Following")
+        ProfileStat(numberText = "50", text = "Posts")
+        ProfileStat(numberText = "301", text = "Followers")
+        ProfileStat(numberText = "26", text = "Following")
     }
 }
 
@@ -273,7 +271,7 @@ fun ProfileDescription(
             letterSpacing = letterSpacing,
             lineHeight = lineHeight
         )
-        if(followedBy.isNotEmpty()) {
+        if (followedBy.isNotEmpty()) {
             Text(
                 text = buildAnnotatedString {
                     val boldStyle = SpanStyle(
@@ -285,11 +283,11 @@ fun ProfileDescription(
                         pushStyle(boldStyle)
                         append(name)
                         pop()
-                        if(index < followedBy.size - 1) {
+                        if (index < followedBy.size - 1) {
                             append(", ")
                         }
                     }
-                    if(otherCount > 2) {
+                    if (otherCount > 2) {
                         append(" and ")
                         pushStyle(boldStyle)
                         append("$otherCount others")
@@ -317,24 +315,23 @@ fun ButtonSection(
             icon = Icons.Default.KeyboardArrowDown,
             modifier = Modifier
                 .defaultMinSize(minWidth = minWidth)
-                .height(height)
+                .height(height = height)
         )
         ActionButton(
             text = "Message",
             modifier = Modifier
                 .defaultMinSize(minWidth = minWidth)
-                .height(height)
+                .height(height = height)
         )
         ActionButton(
             text = "Email",
             modifier = Modifier
                 .defaultMinSize(minWidth = minWidth)
-                .height(height)
+                .height(height = height)
         )
         ActionButton(
             icon = Icons.Default.KeyboardArrowDown,
-            modifier = Modifier
-                .size(height)
+            modifier = Modifier.height(height = height)
         )
     }
 }
@@ -356,19 +353,15 @@ fun ActionButton(
             )
             .padding(6.dp)
     ) {
-        if(text != null) {
+        if (text != null) {
             Text(
                 text = text,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp
             )
         }
-        if(icon != null) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = Color.Black
-            )
+        if (icon != null) {
+            Icon(imageVector = icon, contentDescription = null, tint = Color.Black)
         }
     }
 }
@@ -383,8 +376,7 @@ fun HighlightSection(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .padding(end = 15.dp)
+                modifier = Modifier.padding(end = 15.dp)
             ) {
                 RoundImage(
                     image = highlights[it].image,
@@ -416,7 +408,7 @@ fun PostTabView(
         contentColor = Color.Black,
         modifier = modifier
     ) {
-        imageWithTexts.forEachIndexed { index, item ->
+        imageWithTexts.forEachIndexed { index, imageWithText ->
             Tab(
                 selected = selectedTabIndex == index,
                 selectedContentColor = Color.Black,
@@ -427,9 +419,9 @@ fun PostTabView(
                 }
             ) {
                 Icon(
-                    painter = item.image,
-                    contentDescription = item.text,
-                    tint = if(selectedTabIndex == index) Color.Black else inactiveColor,
+                    painter = imageWithText.image,
+                    contentDescription = imageWithText.text,
+                    tint = if (selectedTabIndex == index) Color.Black else inactiveColor,
                     modifier = Modifier
                         .padding(10.dp)
                         .size(20.dp)
