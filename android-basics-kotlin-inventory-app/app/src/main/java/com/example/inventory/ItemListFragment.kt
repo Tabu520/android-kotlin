@@ -17,10 +17,12 @@
 package com.example.inventory
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.inventory.databinding.ItemListFragmentBinding
@@ -32,6 +34,11 @@ class ItemListFragment : Fragment() {
 
     private var _binding: ItemListFragmentBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: InventoryViewModel by activityViewModels {
+        InventoryViewModelFactory(
+            (requireActivity().application as InventoryApplication).database.itemDao()
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,12 +51,24 @@ class ItemListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("TaiPT", "ItemListFragment::onViewCreated()")
+        val adapter = ItemListAdapter {
+            val action = ItemListFragmentDirections.actionItemListFragmentToItemDetailFragment(
+                it.id
+            )
+            findNavController().navigate(action)
+        }
+        binding.recyclerView.adapter = adapter
+        viewModel.allItems.observe(viewLifecycleOwner) { items ->
+            Log.d("TaiPT", "ItemListFragment::onViewCreated() -- update list")
+            items.let { adapter.submitList(it) }
+        }
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.floatingActionButton.setOnClickListener {
             val action = ItemListFragmentDirections.actionItemListFragmentToAddItemFragment(
                 getString(R.string.add_fragment_title)
             )
-            this.findNavController().navigate(action)
+            findNavController().navigate(action)
         }
     }
 }
