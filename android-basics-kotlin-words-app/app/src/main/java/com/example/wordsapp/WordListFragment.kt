@@ -49,7 +49,7 @@ class WordListFragment : Fragment() {
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
 
-        requireActivity().title = getString(R.string.detail_prefix) + " " + letterId
+//        requireActivity().title = getString(R.string.detail_prefix) + " " + letterId
     }
 
     override fun onDestroy() {
