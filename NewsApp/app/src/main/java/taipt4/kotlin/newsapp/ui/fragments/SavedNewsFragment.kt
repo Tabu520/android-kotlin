@@ -57,9 +57,9 @@ class SavedNewsFragment : Fragment() {
         super.onStart()
         Log.d("TaiPT", "SavedNewsFragment::onStart()")
         viewModel = (activity as NewsActivity).viewModel
-        viewModel.getSavedNews().observe(viewLifecycleOwner, { articles ->
+        viewModel.getSavedNews().observe(viewLifecycleOwner) { articles ->
             newsAdapter.differ.submitList(articles)
-        })
+        }
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT

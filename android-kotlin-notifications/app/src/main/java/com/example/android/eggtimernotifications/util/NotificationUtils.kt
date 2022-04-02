@@ -19,7 +19,8 @@ private val FLAGS = 0
 /**
  * Builds and delivers the notification.
  *
- * @param context, activity context.
+ * @param messageBody, notification text.
+ * @param applicationContext, activity context.
  */
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
     // Create the content intent for the notification, which launches

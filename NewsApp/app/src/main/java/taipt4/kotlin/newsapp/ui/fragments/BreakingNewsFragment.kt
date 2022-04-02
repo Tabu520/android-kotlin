@@ -9,11 +9,13 @@ import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import taipt4.kotlin.newsapp.R
 import taipt4.kotlin.newsapp.adapters.NewsAdapter
 import taipt4.kotlin.newsapp.databinding.FragmentBreakingNewsBinding
+import taipt4.kotlin.newsapp.models.Article
 import taipt4.kotlin.newsapp.models.NewsResponse
 import taipt4.kotlin.newsapp.ui.NewsActivity
 import taipt4.kotlin.newsapp.ui.NewsViewModel
@@ -28,6 +30,8 @@ class BreakingNewsFragment : Fragment() {
     private val binding get() = _binding!!
     lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
+
+    val args2: BreakingNewsFragmentArgs by navArgs()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -119,6 +123,8 @@ class BreakingNewsFragment : Fragment() {
                 }
             }
         }
+        val article2: Article? = args2.article2
+        Log.d(TAG, "onStart: ${article2?.description}")
     }
 
     private fun setupRecyclerView() {

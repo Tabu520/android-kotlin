@@ -108,32 +108,33 @@ class SearchNewsFragment : Fragment() {
         Log.d("TaiPT", "SearchNewsFragment::onStart()")
         viewModel = (activity as NewsActivity).viewModel
         viewModel.searchNews.observe(
-            viewLifecycleOwner,
-            { response: Resource<NewsResponse> ->
-                when (response) {
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        response.data?.let { newsResponse: NewsResponse ->
-                            newsAdapter.differ.submitList(newsResponse.articles.toList())
-                            val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
-                            isLastPage = viewModel.searchNewsPage == totalPages
-                            if (isLastPage) {
-                                binding.rvSearchNews.setPadding(0, 0, 0, 0)
-                            }
+            viewLifecycleOwner
+        ) { response: Resource<NewsResponse> ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { newsResponse: NewsResponse ->
+                        newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                        isLastPage = viewModel.searchNewsPage == totalPages
+                        if (isLastPage) {
+                            binding.rvSearchNews.setPadding(0, 0, 0, 0)
                         }
-                    }
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        response.message?.let { message ->
-                            Log.e(TAG, "An error occurred: $message")
-                            Toast.makeText(context, "An error occurred: $message", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    is Resource.Loading -> {
-                        showProgressBar()
                     }
                 }
-            })
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        Log.e(TAG, "An error occurred: $message")
+                        Toast.makeText(context, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
