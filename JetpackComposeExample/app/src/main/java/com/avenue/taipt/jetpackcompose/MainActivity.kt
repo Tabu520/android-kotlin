@@ -58,6 +58,7 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import com.avenue.taipt.jetpackcompose.ui.Navigation
 import com.avenue.taipt.jetpackcompose.ui.theme.JetpackComposeTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,7 +68,6 @@ import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
-    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //--- part 1 + 2 - WIDTH + HEIGHT ---//
@@ -425,24 +425,29 @@ class MainActivity : ComponentActivity() {
 //        }
 
         //--- part 16: 3D Animated Drop Down ---//
+//        setContent {
+//            Surface(
+//                color = Color(0xFF101010),
+//                modifier = Modifier.fillMaxSize()
+//            ) {
+//                DropDown(
+//                    text = "Hello World!",
+//                    modifier = Modifier.padding(15.dp)
+//                ) {
+//                    Text(
+//                        text = "This is now revealed!",
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(100.dp)
+//                            .background(Color.Green)
+//                    )
+//                }
+//            }
+//        }
+
+        // Navigation
         setContent {
-            Surface(
-                color = Color(0xFF101010),
-                modifier = Modifier.fillMaxSize()
-            ) {
-                DropDown(
-                    text = "Hello World!",
-                    modifier = Modifier.padding(15.dp)
-                ) {
-                    Text(
-                        text = "This is now revealed!",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp)
-                            .background(Color.Green)
-                    )
-                }
-            }
+            Navigation()
         }
     }
 }

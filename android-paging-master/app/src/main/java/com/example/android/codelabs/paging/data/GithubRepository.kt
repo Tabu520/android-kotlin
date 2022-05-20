@@ -17,6 +17,9 @@
 package com.example.android.codelabs.paging.data
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.android.codelabs.paging.api.GithubService
 import com.example.android.codelabs.paging.api.IN_QUALIFIER
 import com.example.android.codelabs.paging.model.Repo
@@ -51,13 +54,15 @@ class GithubRepository(private val service: GithubService) {
      * Search repositories whose names match the query, exposed as a stream of data that will emit
      * every time we get more data from the network.
      */
-    suspend fun getSearchResultStream(query: String): Flow<RepoSearchResult> {
+    fun getSearchResultStream(query: String): Flow<PagingData<Repo>> {
         Log.d("GithubRepository", "New query: $query")
-        lastRequestedPage = 1
-        inMemoryCache.clear()
-        requestAndSaveData(query)
-
-        return searchResults
+        return Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { GithubPagingSource(service, query) }
+        ).flow
     }
 
     suspend fun requestMore(query: String) {
@@ -81,7 +86,7 @@ class GithubRepository(private val service: GithubService) {
         try {
             val response = service.searchRepos(apiQuery, lastRequestedPage, NETWORK_PAGE_SIZE)
             Log.d("GithubRepository", "response $response")
-            val repos = response.items ?: emptyList()
+            val repos = response.items
             inMemoryCache.addAll(repos)
             val reposByName = reposByName(query)
             searchResults.emit(RepoSearchResult.Success(reposByName))
@@ -105,6 +110,6 @@ class GithubRepository(private val service: GithubService) {
     }
 
     companion object {
-        const val NETWORK_PAGE_SIZE = 30
+        const val NETWORK_PAGE_SIZE = 50
     }
 }
