@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Jetpack Compose</string>
+    <string name="click_me">Click me</string>
+    <string name="music_knob">Music Knob</string>
+    <string name="open_or_close_drop_down">Open or close the dropdown</string>
+    <string name="home">home</string>
 </resources>

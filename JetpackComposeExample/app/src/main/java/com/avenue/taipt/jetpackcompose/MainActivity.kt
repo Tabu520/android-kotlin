@@ -17,11 +17,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -38,7 +42,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -58,7 +64,16 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.avenue.taipt.jetpackcompose.ui.BottomNavItem
 import com.avenue.taipt.jetpackcompose.ui.Navigation
+import com.avenue.taipt.jetpackcompose.ui.theme.BottomNavWithBadgesTheme
+import com.avenue.taipt.jetpackcompose.ui.theme.ComposeParallaxScrollTheme
 import com.avenue.taipt.jetpackcompose.ui.theme.JetpackComposeTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -446,9 +461,72 @@ class MainActivity : ComponentActivity() {
 //        }
 
         // Navigation
+//        setContent {
+//            Navigation()
+//        }
+
+        // Bottom Navigation
+//        setContent {
+//            BottomNavWithBadgesTheme {
+//                val navController = rememberNavController()
+//                Scaffold(
+//                    bottomBar = {
+//                        BottomNavigationBar(
+//                            items = listOf(
+//                                BottomNavItem(
+//                                    name = "Home",
+//                                    route = "home",
+//                                    icon = Icons.Default.Home
+//                                ),
+//                                BottomNavItem(
+//                                    name = "Chat",
+//                                    route = "chat",
+//                                    icon = Icons.Default.Notifications,
+//                                    badgeCount = 20
+//                                ),
+//                                BottomNavItem(
+//                                    name = "Settings",
+//                                    route = "settings",
+//                                    icon = Icons.Default.Settings,
+//                                    badgeCount = 1
+//                                )
+//                            ),
+//                            navController = navController,
+//                            onItemClick = {
+//                                navController.navigate(it.route)
+//                            }
+//                        )
+//                    }
+//                ) {
+//                    MyBottomNavigation(navHostController = navController)
+//                }
+//            }
+//        }
+
+        // Multi-Layer Parallax Scroll Effect
         setContent {
-            Navigation()
+            ComposeParallaxScrollTheme {
+
+                val moonScrollSpeed = 0.08f
+                val midBgScrollSpeed = 0.03f
+
+                val imageHeight = (LocalConfiguration.current.screenHeightDp * (2f / 3f)).dp
+
+                var moonOffset by remember {
+                    mutableStateOf(0f)
+                }
+                var midBgOffset by remember {
+                    mutableStateOf(0f)
+                }
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+
+                }
+            }
         }
+
     }
 }
 
@@ -534,7 +612,7 @@ fun MyComposable(backPressedDispatcher: OnBackPressedDispatcher) {
         }
     }
     Button(onClick = { /*TODO*/ }) {
-        Text(text = "Click me")
+        Text(text = stringResource(R.string.click_me))
     }
 }
 
@@ -636,7 +714,7 @@ fun MusicKnob(
 
     Image(
         painter = painterResource(id = R.drawable.music_knob),
-        contentDescription = "Music Knob",
+        contentDescription = stringResource(R.string.music_knob),
         modifier = modifier
             .fillMaxSize()
             .onGloballyPositioned {
@@ -705,7 +783,7 @@ fun DropDown(
         ) {
             Text(text = text, color = Color.White, fontSize = 16.sp)
             Icon(imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = "Open or close the dropdown",
+                contentDescription = stringResource(R.string.open_or_close_drop_down),
                 tint = Color.White,
                 modifier = Modifier
                     .clickable {
@@ -727,5 +805,110 @@ fun DropDown(
         ) {
             content()
         }
+    }
+}
+
+@Composable
+fun MyBottomNavigation(navHostController: NavHostController) {
+    NavHost(navController = navHostController, startDestination = stringResource(R.string.home)) {
+        composable(route = "home") {
+            HomeScreen()
+        }
+        composable(route = "chat") {
+            ChatScreen()
+        }
+        composable(route = "settings") {
+            SettingsScreen()
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(
+    items: List<BottomNavItem>,
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    onItemClick: (BottomNavItem) -> Unit
+) {
+    val backStackEntry = navController.currentBackStackEntryAsState()
+    BottomNavigation(
+        modifier = modifier,
+        backgroundColor = Color.DarkGray,
+        elevation = 5.dp
+    ) {
+        items.forEach { item ->
+            val selected = item.route == backStackEntry.value?.destination?.route
+            BottomNavigationItem(
+                selected = selected,
+                onClick = {
+                    onItemClick(item)
+                },
+                selectedContentColor = Color.Green,
+                unselectedContentColor = Color.Gray,
+                icon = {
+                    Column(
+                        horizontalAlignment = CenterHorizontally
+                    ) {
+                        if (item.badgeCount > 0) {
+                            BadgedBox(
+                                badge = {
+                                    Text(
+                                        text = item.badgeCount.toString(),
+                                        color = Color.Red,
+                                    )
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = item.icon,
+                                    contentDescription = item.name
+                                )
+                            }
+                        } else {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = item.name
+                            )
+                        }
+                        if (selected) {
+                            Text(
+                                text = item.name,
+                                textAlign = TextAlign.Center,
+                                fontSize = 10.sp
+                            )
+                        }
+                    }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Home screen")
+    }
+}
+
+@Composable
+fun ChatScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Chat screen")
+    }
+}
+
+@Composable
+fun SettingsScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Settings screen")
     }
 }
