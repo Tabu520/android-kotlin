@@ -4,29 +4,31 @@
 
 package com.avenue.maximo.restclient;
 
-import java.util.HashMap;
-import java.net.URLEncoder;
-import org.apache.commons.codec.binary.Base64;
-import java.util.Date;
-import java.util.Locale;
-import org.xmlpull.v1.XmlPullParserException;
-import java.io.IOException;
 import com.avenue.maximo.restclient.mbo.RestMboSet;
-import java.util.ArrayList;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.JsonParser;
-import org.xmlpull.v1.XmlPullParser;
-import java.io.Reader;
-import org.xmlpull.v1.XmlPullParserFactory;
 import com.fasterxml.jackson.core.JsonFactory;
-import java.io.InputStreamReader;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.List;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 
-public abstract class RestResourceImpl implements RestResource
-{
+import org.apache.commons.codec.binary.Base64;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+public abstract class RestResourceImpl implements RestResource {
     private int index;
     private List<RestAttribute> attributeList;
     private boolean isHidden;
@@ -39,7 +41,7 @@ public abstract class RestResourceImpl implements RestResource
     private String uniqueID;
     private String rowstamp;
     private Map<String, RestResourceSet> relatedSets;
-    
+
     public RestResourceImpl(final int index, final RestResourceSet restResourceSet) {
         this.index = -1;
         this.isHidden = false;
@@ -52,41 +54,41 @@ public abstract class RestResourceImpl implements RestResource
         this.setThisSet(restResourceSet);
         this.setIndex(index);
     }
-    
+
     public RestResourceImpl(final RestResourceSet restResourceSet) {
         this(restResourceSet.count(), restResourceSet);
     }
-    
+
     protected RestResource setThisSet(final RestResourceSet restResourceSet) {
         this.thisSet = restResourceSet;
         return this;
     }
-    
+
     @Override
     public RestResourceSet getThisSet() {
         return this.thisSet;
     }
-    
+
     @Override
     public MaximoRestConnector getMaximoRestConnector() {
         return (this.getThisSet() != null) ? this.getThisSet().getMaximoRestConnector() : null;
     }
-    
+
     protected RestResource setRowStamp(final String value) {
         this.rowstamp = value;
         return this;
     }
-    
+
     @Override
     public String getRowStamp() {
         return this.rowstamp;
     }
-    
+
     @Override
     public String getURI() {
         return this.getMaximoRestConnector().getConnectorURI(this) + "/" + this.getName() + "/" + this.getUniqueID();
     }
-    
+
     @Override
     public RestResourceMeta getMeta() {
         if (this.getThisSet() != null) {
@@ -94,215 +96,220 @@ public abstract class RestResourceImpl implements RestResource
         }
         return null;
     }
-    
+
     @Override
     public String getTableName() {
         return this.getMeta().getTableName();
     }
-    
+
     @Override
     public String getName() {
         return this.getMeta().getName();
     }
-    
+
     @Override
     public RestResource setUniqueID(final String uniqueID) {
         this.uniqueID = uniqueID;
         return this;
     }
-    
+
     @Override
     public String getUniqueID() {
         return this.uniqueID;
     }
-    
+
     @Override
     public String getUniqueColumn() {
         if (this.getThisSet().getUniqueColumn() == null) {
-            for (final RestAttribute attr : this.getAttributes()) {
+            Iterator var1 = this.getAttributes().iterator();
+
+            while (var1.hasNext()) {
+                RestAttribute attr = (RestAttribute) var1.next();
                 if (attr.isUniqueId()) {
                     this.getThisSet().setUniqueColumn(attr.getName());
                     break;
                 }
             }
         }
+
         return this.getThisSet().getUniqueColumn();
     }
-    
+
     @Override
     public String getSelectClause() {
         return this.thisSet.getSelectClause();
     }
-    
+
     @Override
     public RestResource setIndex(final int index) {
         this.index = index;
         return this;
     }
-    
+
     @Override
     public int getIndex() {
         return this.index;
     }
-    
+
     @Override
     public RestAttribute getNewAttributeInstance(final String name) {
         return new RestAttributeImpl(name, this);
     }
-    
+
     protected void onResponseHandled() {
         this.setLoaded(true);
     }
-    
+
     @Override
     public void handleResponse(final InputStream response) throws RestException {
         try {
-            final Reader inputReader = new InputStreamReader(response, "utf-8");
+            final Reader inputReader = new InputStreamReader(response, StandardCharsets.UTF_8);
             if (this.getMaximoRestConnector().getRestParams().isJSONFormat()) {
                 this.parseJsonResponse(new JsonFactory().createParser(inputReader));
-            }
-            else {
+            } else {
                 final XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
                 final XmlPullParser xpp = factory.newPullParser();
                 xpp.setInput(inputReader);
                 this.parseXMLResponse(xpp);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new RestException("Errors while parsing the response", ex);
         }
     }
-    
+
     @Override
     public void parseJsonResponse(final Object parser) throws RestException {
         try {
-            final JsonParser jsonParser = (JsonParser)parser;
+            JsonParser jsonParser = (JsonParser) parser;
+
             for (JsonToken token = jsonParser.nextToken(); token != JsonToken.END_OBJECT; token = jsonParser.nextToken()) {
                 if (token == JsonToken.FIELD_NAME) {
                     String fieldName = jsonParser.getCurrentName();
                     token = jsonParser.nextToken();
                     if (fieldName.equals("rowstamp")) {
                         this.setRowStamp(jsonParser.getValueAsString());
-                    }
-                    else if (fieldName.equals("hidden")) {
+                    } else if (fieldName.equals("hidden")) {
                         this.setHidden(jsonParser.getBooleanValue());
-                    }
-                    else if (fieldName.equals("readonly")) {
+                    } else if (fieldName.equals("readonly")) {
                         this.setReadOnly(jsonParser.getBooleanValue());
-                    }
-                    else if (fieldName.equals("Attributes")) {
-                        final List<RestAttribute> newAttrList = new ArrayList<RestAttribute>();
+                    } else if (fieldName.equals("Attributes")) {
+                        List<RestAttribute> newAttrList = new ArrayList();
                         if (token == JsonToken.START_OBJECT) {
                             while (token != JsonToken.END_OBJECT) {
                                 token = jsonParser.nextToken();
                                 if (token == JsonToken.FIELD_NAME) {
-                                    final String attrName = jsonParser.getCurrentName();
+                                    String attrName = jsonParser.getCurrentName();
                                     RestAttribute newAttr = this.getAttribute(attrName);
                                     if (newAttr == null) {
                                         newAttr = this.getNewAttributeInstance(attrName);
                                         newAttrList.add(newAttr);
                                     }
+
                                     newAttr.parseJsonResponse(parser);
                                     this.onAttributeFetched(newAttr);
                                 }
                             }
                         }
+
                         this.setAttributes(newAttrList, false);
-                    }
-                    else if (fieldName.equals("RelatedMbos")) {
+                    } else if (fieldName.equals("RelatedMbos")) {
                         for (token = jsonParser.getCurrentToken(); token != JsonToken.END_OBJECT; token = jsonParser.nextToken()) {
                             if (token == JsonToken.FIELD_NAME) {
                                 fieldName = jsonParser.getCurrentName();
-                            }
-                            else if (token == JsonToken.START_ARRAY) {
-                                while (token != JsonToken.END_OBJECT && token != JsonToken.FIELD_NAME) {
+                            } else if (token == JsonToken.START_ARRAY) {
+                                for (; token != JsonToken.END_OBJECT && token != JsonToken.FIELD_NAME; token = jsonParser.getCurrentToken()) {
                                     if (token == JsonToken.START_ARRAY) {
-                                        final RestMboSet newSet = new RestMboSet(fieldName, this.getMaximoRestConnector());
+                                        RestMboSet newSet = new RestMboSet(fieldName, this.getMaximoRestConnector());
                                         newSet.setOwner(this);
                                         newSet.setRelationship(fieldName);
                                         newSet.parseJsonResponse(parser);
                                         this.getRelatedSetList().put(fieldName, newSet);
-                                    }
-                                    else if (token == JsonToken.END_ARRAY) {
+                                    } else if (token == JsonToken.END_ARRAY) {
                                         break;
                                     }
-                                    token = jsonParser.getCurrentToken();
                                 }
                             }
                         }
                     }
                 }
             }
+
             this.onResponseHandled();
-        }
-        catch (IOException ex) {
-            throw new RestException(ex);
+        } catch (IOException var8) {
+            throw new RestException(var8);
         }
     }
-    
+
     @Override
     public void parseXMLResponse(final Object parser) throws RestException {
         try {
-            final XmlPullParser xmlParser = (XmlPullParser)parser;
+            XmlPullParser xmlParser = (XmlPullParser) parser;
             int event = xmlParser.getEventType();
+
+            label69:
             while (event != 1) {
                 event = xmlParser.getEventType();
                 String tagName = xmlParser.getName();
                 if (event == 2) {
-                    final String requiredAttr = xmlParser.getAttributeValue((String)null, "required");
+                    String requiredAttr = xmlParser.getAttributeValue(null, "required");
                     if (requiredAttr != null) {
                         RestAttribute newAttr = this.getAttribute(tagName);
                         if (newAttr == null) {
                             newAttr = this.getNewAttributeInstance(tagName);
                             this.addAttribute(newAttr);
                         }
+
                         newAttr.parseXMLResponse(xmlParser);
                         this.onAttributeFetched(newAttr);
-                    }
-                    else {
+                    } else {
                         if (!tagName.equals(this.getTableName())) {
-                            while (event != 3 || !tagName.equals(this.getTableName())) {
+                            while (true) {
+                                if (event == 3 && tagName.equals(this.getTableName())) {
+                                    break label69;
+                                }
+
                                 if (event == 2) {
                                     RestResourceSet relatedRSSet = this.getRelatedSet(tagName);
                                     if (relatedRSSet == null) {
                                         relatedRSSet = new RestMboSet(tagName, this.getMaximoRestConnector());
-                                        ((RestMboSet)relatedRSSet).setOwner(this);
-                                        ((RestMboSet)relatedRSSet).setRelationship(tagName);
+                                        ((RestMboSet) relatedRSSet).setOwner(this);
+                                        ((RestMboSet) relatedRSSet).setRelationship(tagName);
                                         relatedRSSet.parseXMLResponse(xmlParser);
                                         this.getRelatedSetList().put(tagName, relatedRSSet);
                                     }
                                 }
+
                                 event = xmlParser.getEventType();
                                 tagName = xmlParser.getName();
                             }
-                            break;
                         }
-                        final String hiddenAttr = xmlParser.getAttributeValue((String)null, "hidden");
-                        final String readonlyAttr = xmlParser.getAttributeValue((String)null, "readonly");
+
+                        String hiddenAttr = xmlParser.getAttributeValue(null, "hidden");
+                        String readonlyAttr = xmlParser.getAttributeValue(null, "readonly");
                         if (hiddenAttr != null) {
-                            this.setHidden(Integer.valueOf(hiddenAttr) == 1);
+                            this.setHidden(Integer.parseInt(hiddenAttr) == 1);
                         }
+
                         if (readonlyAttr != null) {
-                            this.setReadOnly(Integer.valueOf(readonlyAttr) == 1);
+                            this.setReadOnly(Integer.parseInt(readonlyAttr) == 1);
                         }
                     }
                 }
+
                 if (event == 3 && tagName.equals(this.getTableName())) {
                     break;
                 }
+
                 xmlParser.next();
             }
+
             this.onResponseHandled();
-        }
-        catch (XmlPullParserException xppe) {
-            throw new RestException((Throwable)xppe);
-        }
-        catch (IOException ioe) {
-            throw new RestException(ioe);
+        } catch (XmlPullParserException | IOException var8) {
+            throw new RestException(var8);
         }
     }
-    
+
     protected void onAttributeFetched(final RestAttribute attr) {
         if (attr.isUniqueId()) {
             if (this.getUniqueColumn() == null) {
@@ -315,7 +322,7 @@ public abstract class RestResourceImpl implements RestResource
             this.getMeta().getListAttributeMeta().add(newAttrMeta);
         }
     }
-    
+
     @Override
     public void loadFromServer() throws RestException {
         if (!this.isLoaded()) {
@@ -326,19 +333,18 @@ public abstract class RestResourceImpl implements RestResource
                     throw new RestException("The resource is invalid");
                 }
                 this.getMaximoRestConnector().get(uri, this);
-            }
-            catch (IOException ioe) {
+            } catch (IOException ioe) {
                 throw new RestException(ioe.getMessage(), ioe);
             }
         }
     }
-    
+
     @Override
     public void reloadFromServer(final String... attributes) throws RestException {
         this.getMaximoRestConnector().getRestParams().put("_includecols", new RestQuerySelect().select(attributes));
         this.reloadFromServer();
     }
-    
+
     @Override
     public void reloadFromServer() throws RestException {
         if (this.getURI() != null) {
@@ -346,13 +352,12 @@ public abstract class RestResourceImpl implements RestResource
             this.loadFromServer();
         }
     }
-    
+
     @Override
     public RestResource setAttributes(final List<RestAttribute> newList, final boolean overWrite) {
         if ((overWrite && this.attributeList != null) || this.attributeList == null || this.attributeList.isEmpty()) {
             this.attributeList = newList;
-        }
-        else {
+        } else {
             for (int i = 0; i < newList.size(); ++i) {
                 for (int j = 0; j < this.attributeList.size(); ++j) {
                     final RestAttribute newRestAttribute = newList.get(i);
@@ -365,64 +370,65 @@ public abstract class RestResourceImpl implements RestResource
         }
         return this;
     }
-    
+
     @Override
     public List<RestAttribute> getAttributes() {
         if (this.attributeList == null) {
-            this.attributeList = new ArrayList<RestAttribute>();
+            this.attributeList = new ArrayList<>();
         }
         return this.attributeList;
     }
-    
+
     @Override
     public RestAttribute getAttribute(final int index) {
-        if (this.hasAttributes()) {
-            return this.getAttributes().get(index);
-        }
-        return null;
+        return this.hasAttributes() ? this.getAttributes().get(index) : null;
     }
-    
+
     @Override
     public RestAttribute getAttribute(final String name) {
         if (this.hasAttributes()) {
-            for (final RestAttribute restAttribute : this.getAttributes()) {
+            Iterator var2 = this.getAttributes().iterator();
+
+            while (var2.hasNext()) {
+                RestAttribute restAttribute = (RestAttribute) var2.next();
                 if (restAttribute.getName().equalsIgnoreCase(name)) {
                     return restAttribute;
                 }
             }
         }
+
         return null;
     }
-    
+
     @Override
     public boolean hasAttributes() {
         return this.getAttributes() != null && !this.getAttributes().isEmpty();
     }
-    
+
     @Override
     public boolean containsAttribute(final String name) {
         return this.containsAttribute(new RestAttributeImpl(name));
     }
-    
+
     @Override
     public boolean containsAttribute(final RestAttribute attr) {
         return this.hasAttributes() && this.getAttributes().contains(attr);
     }
-    
+
     @Override
     public RestAttribute addAttribute(final String attributeName) throws RestException {
         final RestAttribute newAttr = this.getNewAttributeInstance(attributeName);
         this.addAttribute(newAttr);
         return newAttr;
     }
-    
+
     @Override
     public RestResource addAttribute(final String attributeName, final Object value) throws RestException {
         final RestAttribute newAttr = this.getNewAttributeInstance(attributeName);
         newAttr.setValue(value);
         return this.addAttribute(newAttr);
     }
-    
+
     @Override
     public RestResource addAttribute(final RestAttribute attr) throws RestException {
         if (!this.containsAttribute(attr)) {
@@ -431,40 +437,40 @@ public abstract class RestResourceImpl implements RestResource
         }
         throw new RestException("Already contains a RestAttribute named '" + attr.getName() + "'");
     }
-    
+
     @Override
     public RestResource setLoaded(final boolean value) {
         this.isLoaded = value;
         return this;
     }
-    
+
     @Override
     public boolean isLoaded() {
         return this.isLoaded;
     }
-    
+
     @Override
     public RestResource setModified(final boolean value) {
         this.isModified = value;
         return this;
     }
-    
+
     @Override
     public boolean isModified() {
         return this.isModified;
     }
-    
+
     @Override
     public RestResource setToBeAdded(final boolean value) {
         this.toBeAdded = value;
         return this;
     }
-    
+
     @Override
     public boolean toBeAdded() {
         return this.toBeAdded;
     }
-    
+
     @Override
     public RestResource setToBeDeleted(final boolean value) {
         this.toBeDeleted = value;
@@ -476,111 +482,110 @@ public abstract class RestResourceImpl implements RestResource
         }
         return this;
     }
-    
+
     @Override
     public boolean toBeDeleted() {
         return this.toBeDeleted;
     }
-    
+
     @Override
     public boolean toBeSaved() {
         return (this.toBeAdded() && !this.toBeDeleted()) || this.isModified() || this.toBeDeleted();
     }
-    
+
     @Override
     public boolean isNull(final String attribute) {
         return !this.containsAttribute(attribute) || this.getAttribute(attribute).isNull();
     }
-    
+
     @Override
     public Object getValue(final String attribute) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getValue() : null;
     }
-    
+
     @Override
     public String getString(final String attribute) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getString() : null;
     }
-    
+
     @Override
     public Boolean getBoolean(final String attribute) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getBoolean() : null;
     }
-    
+
     @Override
     public Integer getInt(final String attribute, final Locale locale) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getInt(locale) : null;
     }
-    
+
     @Override
     public Integer getInt(final String attribute) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getInt() : null;
     }
-    
+
     @Override
     public Long getLong(final String attribute, final Locale locale) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getLong(locale) : null;
     }
-    
+
     @Override
     public Long getLong(final String attribute) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getLong() : null;
     }
-    
+
     @Override
     public Float getFloat(final String attribute, final Locale locale) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getFloat(locale) : null;
     }
-    
+
     @Override
     public Float getFloat(final String attribute) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getFloat() : null;
     }
-    
+
     @Override
     public Double getDouble(final String attribute, final Locale locale) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getDouble(locale) : null;
     }
-    
+
     @Override
     public Double getDouble(final String attribute) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getDouble() : null;
     }
-    
+
     @Override
     public Date getDate(final String attribute) {
         return this.containsAttribute(attribute) ? this.getAttribute(attribute).getDate() : null;
     }
-    
+
     @Override
     public byte[] getBytes(final String attribute) {
-        return (byte[])(this.containsAttribute(attribute) ? this.getAttribute(attribute).getBytes() : null);
+        return this.containsAttribute(attribute) ? this.getAttribute(attribute).getBytes() : null;
     }
-    
+
     @Override
     public RestResource setValue(final String attributeName, final Object value) throws RestException {
         if (!this.isReadOnly()) {
             if (this.containsAttribute(attributeName)) {
                 this.getAttribute(attributeName).setValue(value);
-            }
-            else {
+            } else {
                 try {
                     this.addAttribute(attributeName).setValue(value);
+                } catch (RestException ex) {
                 }
-                catch (RestException ex) {}
             }
             this.setModified(true);
             return this;
         }
         throw new RestException("Object " + this.getName() + "(" + this.getUniqueColumn() + ": " + this.getUniqueID() + ") is readonly!");
     }
-    
+
     @Override
     public RestResource setNull(final String atrributeName) throws RestException {
         this.setValue(atrributeName, null);
         return this;
     }
-    
+
     @Override
     public void validateForServer() throws RestException {
         final String uri = this.getURI();
@@ -588,12 +593,12 @@ public abstract class RestResourceImpl implements RestResource
             throw new RestException("The resource is invalid");
         }
     }
-    
+
     @Override
     public boolean canSaveToServer() {
         return true;
     }
-    
+
     protected void putToServer() throws RestException, IOException {
         final RestParams params = this.getMaximoRestConnector().getRestParams();
         if (params.containsKey("#restquerywhere")) {
@@ -610,7 +615,7 @@ public abstract class RestResourceImpl implements RestResource
         this.getMaximoRestConnector().put(this.getURI(), this);
         this.getMaximoRestConnector().resetToInitialParams();
     }
-    
+
     protected void postToServer() throws IOException, RestException {
         String body = "";
         final RestAttribute[] attributes = this.getAttributes().toArray(new RestAttribute[this.getAttributes().size()]);
@@ -621,14 +626,11 @@ public abstract class RestResourceImpl implements RestResource
                 String value;
                 if (attr.isDateTime()) {
                     value = RestResourceImpl.REST_DATE_REQUEST_FORMAT.format(attr.getDate());
-                }
-                else if (attr.isDecimal()) {
+                } else if (attr.isDecimal()) {
                     value = String.valueOf(attr.getDouble());
-                }
-                else if (attr.isBLOB()) {
+                } else if (attr.isBLOB()) {
                     value = Base64.encodeBase64String(attr.getBytes());
-                }
-                else {
+                } else {
                     value = attr.getString();
                 }
                 body = body + attr.getName() + "=" + URLEncoder.encode(value, "utf-8") + "&";
@@ -636,139 +638,150 @@ public abstract class RestResourceImpl implements RestResource
         }
         this.getMaximoRestConnector().post(this.getThisSet().getURI(), body.substring(0, body.length() - 1), this);
     }
-    
+
     protected void deleteOnServer() throws RestException, IOException {
         this.getMaximoRestConnector().resetToInitialParams();
         this.getMaximoRestConnector().delete(this.getURI());
         this.close();
     }
-    
+
     @Override
     public void disconnect() throws RestException {
         try {
             this.getMaximoRestConnector().disconnect();
             this.getMaximoRestConnector().closeConnection();
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             throw new RestException(ioe.getMessage(), ioe);
         }
     }
-    
+
     @Override
     public void saveToServer() throws RestException {
         if (this.canSaveToServer()) {
             this.validateForServer();
+
             try {
                 if (!this.toBeDeleted()) {
                     if (this.toBeAdded()) {
                         this.postToServer();
-                    }
-                    else if (this.isModified()) {
+                    } else if (this.isModified()) {
                         this.putToServer();
                     }
+
                     this.setToBeAdded(false);
                     this.setModified(false);
-                }
-                else {
+                } else {
                     this.deleteOnServer();
                 }
+
                 this.onSavedToServer();
-            }
-            catch (IOException ioe) {
-                throw new RestException(ioe.getMessage(), ioe);
+            } catch (IOException var2) {
+                throw new RestException(var2.getMessage(), var2);
             }
         }
     }
-    
+
     protected void onSavedToServer() {
     }
-    
+
     protected void onAdded() {
     }
-    
+
     @Override
     public RestResource discardChanges() {
         if (this.isModified()) {
-            for (final RestAttribute attr : this.getAttributes()) {
+            Iterator var1 = this.getAttributes().iterator();
+
+            while (var1.hasNext()) {
+                RestAttribute attr = (RestAttribute) var1.next();
                 attr.rollbackToInitialValue();
             }
+
             this.setModified(false);
         }
+
         return this;
     }
-    
+
     @Override
     public boolean isHidden() {
         return this.isHidden;
     }
-    
+
     @Override
     public RestResource setHidden(final boolean value) {
         this.isHidden = value;
         return this;
     }
-    
+
     @Override
     public boolean isReadOnly() {
         return this.isReadOnly;
     }
-    
+
     @Override
     public RestResource setReadOnly(final boolean value) {
         this.isReadOnly = value;
         return this;
     }
-    
+
     @Override
     public void close() {
         synchronized (this) {
             if (this.attributeList != null && !this.attributeList.isEmpty()) {
-                for (final RestAttribute attr : this.getAttributes()) {
+                Iterator var2 = this.getAttributes().iterator();
+
+                while (var2.hasNext()) {
+                    RestAttribute attr = (RestAttribute) var2.next();
                     attr.close();
                 }
+
                 this.attributeList.clear();
             }
+
             if (this.relatedSets != null && !this.relatedSets.isEmpty()) {
                 this.relatedSets.clear();
             }
+
             this.attributeList = null;
             this.thisSet = null;
             this.uniqueID = null;
             this.rowstamp = null;
         }
+
         this.onClosed();
     }
-    
+
     protected void onClosed() {
     }
-    
+
     @Override
     public RestResourceSet getRelatedSet(final String name) {
         return this.getRelatedSetList().get(name);
     }
-    
+
     @Override
     public Map<String, RestResourceSet> getRelatedSetList() {
         if (this.relatedSets == null) {
-            this.relatedSets = new HashMap<String, RestResourceSet>();
+            this.relatedSets = new HashMap<>();
         }
         return this.relatedSets;
     }
-    
+
     protected void clearRelatedSetList() {
         synchronized (this) {
             this.relatedSets.clear();
             this.relatedSets = null;
         }
     }
-    
+
     @Override
     public String toString() {
         return this.getName() + " - " + this.getUniqueColumn() + ": " + this.getUniqueID() + (this.isHidden() ? ", hidden" : "") + (this.isReadOnly() ? ", readonly" : "");
     }
-    
+
     @Override
     public boolean equals(final Object o) {
-        return o instanceof RestResource && ((RestResource)o).getMeta().equals(this.getMeta());
+        return o instanceof RestResource && ((RestResource) o).getMeta().equals(this.getMeta());
     }
 }

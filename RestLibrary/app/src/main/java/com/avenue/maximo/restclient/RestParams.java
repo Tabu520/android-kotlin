@@ -4,14 +4,13 @@
 
 package com.avenue.maximo.restclient;
 
-import java.util.Iterator;
-import java.net.URLEncoder;
-import java.util.Map;
-import java.util.HashMap;
 import java.io.Serializable;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-public class RestParams implements Serializable, Cloneable
-{
+public class RestParams implements Serializable, Cloneable {
     public static final String FORMAT = "_format";
     public static final String COMPACT = "_compact";
     public static final String USE_ROWSTAMP = "_urs";
@@ -44,89 +43,85 @@ public class RestParams implements Serializable, Cloneable
     public static final String TOTAL_COUNT = "_tc";
     public static final String REST_QUERY_WHERE = "#restquerywhere";
     private HashMap<String, Object> parameters;
-    
+
     public RestParams() {
-        this.parameters = new HashMap<String, Object>();
+        this.parameters = new HashMap<>();
     }
-    
+
     public RestParams put(final String key, Object value) {
         if (value instanceof Boolean) {
-            if (value) {
+            if ((Boolean) value) {
                 value = 1;
-            }
-            else {
+            } else {
                 value = 0;
             }
         }
         this.parameters.put(key, value);
         return this;
     }
-    
+
     public Object get(final String key) {
         return this.parameters.get(key);
     }
-    
+
     public Boolean getBoolean(final String key) {
         final Object value = this.get(key);
-        if (value != null && value instanceof Integer && (int)value == 1) {
-            return true;
-        }
-        return false;
+        return value instanceof Integer && (int) value == 1;
     }
-    
+
     public RestParams remove(final String key) {
         this.parameters.remove(key);
         return this;
     }
-    
+
     public RestParams clear() {
         this.parameters.clear();
         return this;
     }
-    
+
     public boolean containsKey(final String key) {
         return this.parameters.containsKey(key);
     }
-    
+
     public boolean containsValue(final Object value) {
         return this.parameters.containsValue(value);
     }
-    
+
     public RestParams clone() {
         final RestParams result = new RestParams();
-        result.parameters = (HashMap<String, Object>)this.parameters.clone();
+        result.parameters = (HashMap) this.parameters.clone();
         return result;
     }
-    
+
     public String construct() throws RestException {
         try {
-            final StringBuilder retStr = new StringBuilder("?");
-            for (final Map.Entry<String, Object> m : this.parameters.entrySet()) {
-                final String key = m.getKey();
+            StringBuilder retStr = new StringBuilder("?");
+
+            for(Iterator var2 = this.parameters.entrySet().iterator(); var2.hasNext(); retStr.append("&")) {
+                Map.Entry<String, Object> m = (Map.Entry)var2.next();
+                String key = m.getKey();
                 if (!key.equals("#restquerywhere")) {
                     retStr.append(m.getKey()).append("=");
                     retStr.append(URLEncoder.encode(String.valueOf(m.getValue()), "utf-8"));
+                } else {
+                    retStr.append(m.getValue());
                 }
-                else {
-                    retStr.append(String.valueOf(m.getValue()));
-                }
-                retStr.append("&");
             }
+
             return retStr.substring(0, retStr.length() - 1);
-        }
-        catch (Exception e) {
+        } catch (Exception var5) {
             throw new RestException("Errors while constructing REST parameters");
         }
     }
-    
+
     public boolean hasFormatSet() {
         return this.get("_format") != null;
     }
-    
+
     public boolean isJSONFormat() {
         return this.hasFormatSet() && this.get("_format").equals("json");
     }
-    
+
     public boolean isXMLFormat() {
         return this.hasFormatSet() && this.get("_format").equals("xml");
     }

@@ -4,24 +4,21 @@
 
 package com.avenue.maximo.restclient;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 
 import org.xmlpull.v1.XmlPullParser;
-
-import java.io.Reader;
-import java.io.IOException;
-
+import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.fasterxml.jackson.core.JsonFactory;
-
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class RestResourceSetImpl implements RestResourceSet {
@@ -58,7 +55,7 @@ public abstract class RestResourceSetImpl implements RestResourceSet {
         this.currRes = null;
         this.currIndex = -1;
         this.toBeSaved = false;
-        this.setMemberList(new ArrayList<RestResource>());
+        this.setMemberList(new ArrayList<>());
     }
 
     public RestResourceSetImpl(final String name, final MaximoRestConnector connector) {
@@ -219,10 +216,14 @@ public abstract class RestResourceSetImpl implements RestResourceSet {
 
     @Override
     public <T extends RestResource> ArrayList<T> getMemberList(final Class<T> subTypeOfResource) {
-        final ArrayList<T> retList = new ArrayList<T>();
-        for (final RestResource rs : this.memberList) {
+        final ArrayList<T> retList = new ArrayList<>();
+        Iterator var3 = this.memberList.iterator();
+
+        while(var3.hasNext()) {
+            RestResource rs = (RestResource)var3.next();
             retList.add(rs.getIndex(), subTypeOfResource.cast(rs));
         }
+
         return retList;
     }
 
@@ -300,7 +301,7 @@ public abstract class RestResourceSetImpl implements RestResourceSet {
     @Override
     public void handleResponse(final InputStream response) throws RestException {
         try {
-            final Reader inputReader = new InputStreamReader(response, "utf-8");
+            final Reader inputReader = new InputStreamReader(response, StandardCharsets.UTF_8);
             if (this.getMaximoRestConnector().getRestParams().isJSONFormat()) {
                 this.parseJsonResponse(new JsonFactory().createParser(inputReader));
             } else {
@@ -325,10 +326,11 @@ public abstract class RestResourceSetImpl implements RestResourceSet {
     @Override
     public void parseJsonResponse(final Object parser) throws RestException {
         try {
-            final JsonParser jsonParser = (JsonParser) parser;
+            JsonParser jsonParser = (JsonParser)parser;
             JsonToken token = jsonParser.getCurrentToken();
-            String fieldName = "";
-            while (token != JsonToken.END_OBJECT) {
+
+            label57:
+            for(String fieldName = ""; token != JsonToken.END_OBJECT; token = jsonParser.nextToken()) {
                 if (token == JsonToken.FIELD_NAME) {
                     fieldName = jsonParser.getCurrentName();
                 } else if (token == JsonToken.VALUE_NUMBER_INT) {
@@ -343,77 +345,90 @@ public abstract class RestResourceSetImpl implements RestResourceSet {
                     if (this.getName() == null) {
                         this.setName(fieldName);
                     }
+
                     if (this.getTableName() == null) {
                         this.setTableName(fieldName);
                     }
-                    for (JsonToken token2 = jsonParser.getCurrentToken(); token2 != JsonToken.END_ARRAY && token2 != null; token2 = jsonParser.nextToken()) {
+
+                    JsonToken token2 = jsonParser.getCurrentToken();
+
+                    while(true) {
+                        if (token2 == JsonToken.END_ARRAY || token2 == null) {
+                            break label57;
+                        }
+
                         if (token2 == JsonToken.START_OBJECT) {
-                            final RestResource newRes = this.populateNewResource();
+                            RestResource newRes = this.populateNewResource();
                             newRes.parseJsonResponse(parser);
                             this.onResourceFetched(newRes);
                         }
+
+                        token2 = jsonParser.nextToken();
                     }
-                    break;
                 }
-                token = jsonParser.nextToken();
             }
+
             this.onResponseHandled();
-        } catch (IOException ex) {
-            throw new RestException(ex);
+        } catch (IOException var7) {
+            throw new RestException(var7);
         }
     }
 
     @Override
     public void parseXMLResponse(final Object parser) throws RestException {
         try {
-            final XmlPullParser xmlParser = (XmlPullParser) parser;
-            for (int event = xmlParser.getEventType(); event != 1; event = xmlParser.next()) {
+            XmlPullParser xmlParser = (XmlPullParser)parser;
+
+            for(int event = xmlParser.getEventType(); event != 1; event = xmlParser.next()) {
                 String requiredMeta = null;
                 String hiddenMeta = null;
                 String readonlyMeta = null;
                 String tagName = xmlParser.getName();
-                if (event == XmlPullParser.START_TAG) {
-                    final String rsStart = xmlParser.getAttributeValue(null, "rsStart");
-                    final String rsCount = xmlParser.getAttributeValue(null, "rsCount");
-                    final String rsTotal = xmlParser.getAttributeValue(null, "rsTotal");
-                    requiredMeta = xmlParser.getAttributeValue(null, "required");
-                    hiddenMeta = xmlParser.getAttributeValue(null, "hidden");
-                    readonlyMeta = xmlParser.getAttributeValue(null, "readonly");
+                if (event == 2) {
+                    String rsStart = xmlParser.getAttributeValue((String)null, "rsStart");
+                    String rsCount = xmlParser.getAttributeValue((String)null, "rsCount");
+                    String rsTotal = xmlParser.getAttributeValue((String)null, "rsTotal");
+                    requiredMeta = xmlParser.getAttributeValue((String)null, "required");
+                    hiddenMeta = xmlParser.getAttributeValue((String)null, "hidden");
+                    readonlyMeta = xmlParser.getAttributeValue((String)null, "readonly");
                     tagName = xmlParser.getName();
-                    if (rsStart != null || rsCount != null || rsTotal != null) {
+                    if (rsStart == null && rsCount == null && rsTotal == null) {
+                        if (requiredMeta == null && hiddenMeta != null && readonlyMeta != null) {
+                            if (this.getTableName() != null && !tagName.equals(this.getTableName())) {
+                                break;
+                            }
+
+                            if (this.getTableName() == null) {
+                                this.setTableName(tagName);
+                            }
+
+                            RestResource newRes = this.populateNewResource();
+                            newRes.parseXMLResponse(xmlParser);
+                            this.onResourceFetched(newRes);
+                        }
+                    } else {
                         if (rsStart != null) {
-                            this.setStartPosition(Integer.parseInt(rsStart));
+                            this.setStartPosition(Integer.valueOf(rsStart));
                         }
+
                         if (rsCount != null) {
-                            this.setRsCount(Integer.parseInt(rsCount));
+                            this.setRsCount(Integer.valueOf(rsCount));
                         }
+
                         if (rsTotal != null) {
-                            this.setRsTotal(Integer.parseInt(rsTotal));
+                            this.setRsTotal(Integer.valueOf(rsTotal));
                         }
-                    } else if (requiredMeta == null && hiddenMeta != null && readonlyMeta != null) {
-                        if (this.getTableName() != null && !tagName.equals(this.getTableName())) {
-                            break;
-                        }
-                        if (this.getTableName() == null) {
-                            this.setTableName(tagName);
-                        }
-                        final RestResource newRes = this.populateNewResource();
-                        newRes.parseXMLResponse(xmlParser);
-                        this.onResourceFetched(newRes);
                     }
                 }
-                if (event == XmlPullParser.END_TAG) {
-                    if (tagName.equals(this.getTableName()) ||
-                            requiredMeta == null && hiddenMeta == null && readonlyMeta == null) {
-                        break;
-                    }
+
+                if (event == 3 && (tagName.equals(this.getTableName()) || requiredMeta == null && hiddenMeta == null && readonlyMeta == null)) {
+                    break;
                 }
             }
+
             this.onResponseHandled();
-        } catch (XmlPullParserException xppe) {
-            throw new RestException((Throwable) xppe);
-        } catch (IOException ioe) {
-            throw new RestException(ioe);
+        } catch (XmlPullParserException | IOException var12) {
+            throw new RestException(var12);
         }
     }
 
@@ -436,7 +451,7 @@ public abstract class RestResourceSetImpl implements RestResourceSet {
             }
 //            throw new RestException(this.toString() + " is already loaded. Please use reloadFromServer()");
         }
-        throw new RestException(this.toString() + " is already loaded. Please use reloadFromServer()");
+        throw new RestException(this + " is already loaded. Please use reloadFromServer()");
     }
 
     @Override
@@ -472,7 +487,7 @@ public abstract class RestResourceSetImpl implements RestResourceSet {
     public RestResourceSet previousPage() throws RestException {
         if (this.isPagingAvailable()) {
             final int ns = this.getStartPosition() - this.getMaxItems();
-            this.setStartPosition((ns > 0) ? ns : 0);
+            this.setStartPosition(Math.max(ns, 0));
             --this.pageID;
             return this;
         }

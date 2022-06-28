@@ -170,13 +170,13 @@ public class RestAttributeMeta implements Serializable
     
     public interface DataType
     {
-        public static final int TEXT = 0;
-        public static final int INTEGER = 1;
-        public static final int LONG = 2;
-        public static final int FLOAT = 3;
-        public static final int DOUBLE = 4;
-        public static final int BOOLEAN = 5;
-        public static final int DATETIME = 6;
-        public static final int BLOB = 7;
+        int TEXT = 0;
+        int INTEGER = 1;
+        int LONG = 2;
+        int FLOAT = 3;
+        int DOUBLE = 4;
+        int BOOLEAN = 5;
+        int DATETIME = 6;
+        int BLOB = 7;
     }
 }

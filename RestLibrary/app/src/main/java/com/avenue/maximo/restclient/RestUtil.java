@@ -5,20 +5,22 @@
 package com.avenue.maximo.restclient;
 
 import org.apache.commons.codec.binary.Base64;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.InputStream;
-import java.net.URLEncoder;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-import java.util.Date;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 
 public class RestUtil
 {
@@ -33,7 +35,7 @@ public class RestUtil
             return "" + o;
         }
         if (o instanceof Boolean) {
-            return (o == null) ? "null" : o.toString();
+            return o.toString();
         }
         return (String)o;
     }
@@ -67,7 +69,7 @@ public class RestUtil
     }
     
     public static String encodeBase64(final String input) throws UnsupportedEncodingException {
-        return new String(Base64.encodeBase64(input.getBytes("utf-8")));
+        return new String(Base64.encodeBase64(input.getBytes(StandardCharsets.UTF_8)));
     }
     
     public static String decodeBase64(final String base64String) throws UnsupportedEncodingException {
