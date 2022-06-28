@@ -12,6 +12,7 @@ import com.jonbott.knownspies.Activities.SecretDetails.SecretDetailsPresenterImp
 import com.jonbott.knownspies.Activities.SpyList.SpyListActivity;
 import com.jonbott.knownspies.Activities.SpyList.SpyListPresenter;
 import com.jonbott.knownspies.Activities.SpyList.SpyListPresenterImpl;
+import com.jonbott.knownspies.Coordinators.RootCoordinator;
 import com.jonbott.knownspies.Helpers.Constants;
 import com.jonbott.knownspies.ModelLayer.Database.DataLayer;
 import com.jonbott.knownspies.ModelLayer.Database.DataLayerImpl;
@@ -32,14 +33,21 @@ public class DependencyRegistry {
 
     public static DependencyRegistry shared = new DependencyRegistry();
 
-    private Gson gson = new Gson();
 
     //region External Dependencies
 
+    private Gson gson = new Gson();
     private Realm realm = Realm.getDefaultInstance();
+
     public Realm newRealmInstanceOnCurrentThread() {
         return Realm.getInstance(realm.getConfiguration());
     }
+
+    //endregion
+
+    //region Coordinators
+
+    public RootCoordinator rootCoordinator = new RootCoordinator();
 
     //endregion
 
@@ -48,11 +56,13 @@ public class DependencyRegistry {
     public SpyTranslator spyTranslator = new SpyTranslatorImpl();
 
     public TranslationLayer translationLayer = createTranslationLayer();
+
     private TranslationLayer createTranslationLayer() {
         return new TranslationLayerImpl(gson, spyTranslator);
     }
 
     public DataLayer dataLayer = createDataLayer();
+
     private DataLayer createDataLayer() {
         return new DataLayerImpl(realm, this::newRealmInstanceOnCurrentThread);
     }
@@ -60,6 +70,7 @@ public class DependencyRegistry {
     public NetworkLayer networkLayer = new NetworkLayerImpl();
 
     public ModelLayer modelLayer = createModelLayer();
+
     private ModelLayer createModelLayer() {
         return new ModelLayerImpl(networkLayer, dataLayer, translationLayer);
     }
@@ -72,18 +83,18 @@ public class DependencyRegistry {
         int spyId = idFromBundle(bundle);
 
         SpyDetailsPresenter presenter = new SpyDetailsPresenterImpl(spyId, activity, modelLayer);
-        activity.configureWith(presenter);
+        activity.configureWith(presenter, rootCoordinator);
     }
 
     public void inject(SecretDetailsActivity activity, Bundle bundle) throws NoSuchElementException {
         int spyId = idFromBundle(bundle);
         SecretDetailsPresenter presenter = new SecretDetailsPresenterImpl(spyId, modelLayer);
-        activity.configureWith(presenter);
+        activity.configureWith(presenter, rootCoordinator);
     }
 
     public void inject(SpyListActivity activity) throws NoSuchElementException {
         SpyListPresenter presenter = new SpyListPresenterImpl(modelLayer);
-        activity.configureWith(presenter);
+        activity.configureWith(presenter, rootCoordinator);
     }
     //endregion
 
@@ -91,7 +102,7 @@ public class DependencyRegistry {
 
     private int idFromBundle(Bundle bundle) {
         if (bundle == null) throw new NoSuchElementException("Unable to get spy id from bundle!");
-        int spyId= bundle.getInt(Constants.spyIdKey);
+        int spyId = bundle.getInt(Constants.spyIdKey);
         if (spyId == 0) throw new NoSuchElementException("Unable to get spy id from bundle!");
         return spyId;
     }

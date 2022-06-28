@@ -1,7 +1,9 @@
 package com.jonbott.knownspies.Activities.SpyList;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jonbott.knownspies.Activities.Details.SpyDetailsActivity;
+import com.jonbott.knownspies.Coordinators.RootCoordinator;
 import com.jonbott.knownspies.Dependencies.DependencyRegistry;
 import com.jonbott.knownspies.Helpers.Constants;
 import com.jonbott.knownspies.ModelLayer.DTOs.SpyDTO;
@@ -23,7 +26,8 @@ public class SpyListActivity extends AppCompatActivity {
     private static final String TAG = "SpyListActivity";
 
     private SpyListPresenter spyListPresenter;
-    private List<SpyDTO> spies = new ArrayList<>();
+    private RootCoordinator coordinator;
+    //    private List<SpyDTO> spies = new ArrayList<>();
     private RecyclerView recyclerView;
 
     @Override
@@ -37,13 +41,30 @@ public class SpyListActivity extends AppCompatActivity {
         DependencyRegistry.shared.inject(this);
     }
 
-    public void configureWith(SpyListPresenter presenter) {
+    public void configureWith(SpyListPresenter presenter, RootCoordinator rootCoordinator) {
         this.spyListPresenter = presenter;
+        coordinator = rootCoordinator;
+
         loadData();
+        setupObservables();
+    }
+
+    @SuppressLint("CheckResult")
+    private void setupObservables() {
+        spyListPresenter.spies().subscribe(spies -> {
+            SpyViewAdapter adapter = (SpyViewAdapter) recyclerView.getAdapter();
+            adapter.setSpies(spies);
+        });
     }
 
     //region Helper Methods
     private void attachUI() {
+
+        Button newSpyButton = findViewById(R.id.new_spy_button);
+        newSpyButton.setOnClickListener(v -> {
+            spyListPresenter.addNewSpy();
+        });
+
         LinearLayoutManager manager = new LinearLayoutManager(this);
 
         recyclerView = findViewById(R.id.spy_recycler_view);
@@ -53,14 +74,7 @@ public class SpyListActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        spyListPresenter.loadData(this::spiesUpdated, this::onDataReceived);
-    }
-
-    private void spiesUpdated(List<SpyDTO> spies) {
-        this.spies = spies;
-        SpyViewAdapter adapter = (SpyViewAdapter) recyclerView.getAdapter();
-        adapter.spies = this.spies;
-        adapter.notifyDataSetChanged();
+        spyListPresenter.loadData(this::onDataReceived);
     }
 
     //endregion
@@ -68,7 +82,7 @@ public class SpyListActivity extends AppCompatActivity {
     //region User Interaction
 
     private void rowTapped(int position) {
-        SpyDTO spy = spies.get(position);
+        SpyDTO spy = spyListPresenter.spies().getValue().get(position);
         gotoSpyDetails(spy.id);
     }
 
@@ -82,7 +96,7 @@ public class SpyListActivity extends AppCompatActivity {
     //region List View Adapter
 
     private void initializeListView() {
-        SpyViewAdapter adapter = new SpyViewAdapter(spies, (v, position) -> rowTapped(position));
+        SpyViewAdapter adapter = new SpyViewAdapter((v, position) -> rowTapped(position));
         recyclerView.setAdapter(adapter);
     }
 
@@ -92,13 +106,7 @@ public class SpyListActivity extends AppCompatActivity {
 
     private void gotoSpyDetails(int spyId) {
 
-        Bundle bundle = new Bundle();
-        bundle.putInt(Constants.spyIdKey, spyId);
-
-        Intent intent = new Intent(SpyListActivity.this, SpyDetailsActivity.class);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
+        coordinator.handleSpyCellTapped(this, spyId);
     }
 
     //endregion

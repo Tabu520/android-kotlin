@@ -19,4 +19,6 @@ public interface DataLayer {
     void persistDTOs(List<SpyDTO> dtos, BiFunction<SpyDTO, Realm, Spy> translationBlock);
 
     Spy spyForId(int spyId);
+
+    Spy spyForName(String name);
 }

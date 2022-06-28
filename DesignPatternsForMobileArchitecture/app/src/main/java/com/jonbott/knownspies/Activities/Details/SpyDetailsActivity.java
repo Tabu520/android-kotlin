@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jonbott.knownspies.Activities.SecretDetails.SecretDetailsActivity;
+import com.jonbott.knownspies.Coordinators.RootCoordinator;
 import com.jonbott.knownspies.Dependencies.DependencyRegistry;
 import com.jonbott.knownspies.Helpers.Constants;
 import com.jonbott.knownspies.R;
@@ -16,6 +17,7 @@ import com.jonbott.knownspies.R;
 public class SpyDetailsActivity extends AppCompatActivity {
 
     private SpyDetailsPresenter presenter;
+    private RootCoordinator coordinator;
 
     private ImageView profileImage;
     private TextView nameTextView;
@@ -33,8 +35,9 @@ public class SpyDetailsActivity extends AppCompatActivity {
         DependencyRegistry.shared.inject(this, bundle);
     }
 
-    public void configureWith(SpyDetailsPresenter presenter) {
+    public void configureWith(SpyDetailsPresenter presenter, RootCoordinator rootCoordinator) {
         this.presenter = presenter;
+        this.coordinator = rootCoordinator;
         ageTextView.setText(presenter.getAge());
         nameTextView.setText(presenter.getName());
         genderTextView.setText(presenter.getGender());
@@ -57,13 +60,9 @@ public class SpyDetailsActivity extends AppCompatActivity {
     //region Navigation
 
     private void gotoSecretDetails() {
-        Bundle bundle = new Bundle();
-        bundle.putInt(Constants.spyIdKey, presenter.getSpyId());
+        if (presenter == null) return;
 
-        Intent intent = new Intent(SpyDetailsActivity.this, SecretDetailsActivity.class);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
+        coordinator.handleSecretButtonTapped(this, presenter.getSpyId());
     }
 
     //endregion

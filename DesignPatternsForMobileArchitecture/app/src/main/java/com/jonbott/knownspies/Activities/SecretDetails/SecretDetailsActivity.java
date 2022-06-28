@@ -10,12 +10,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jonbott.knownspies.Activities.SpyList.SpyListActivity;
+import com.jonbott.knownspies.Coordinators.RootCoordinator;
 import com.jonbott.knownspies.Dependencies.DependencyRegistry;
 import com.jonbott.knownspies.R;
 
 public class SecretDetailsActivity extends AppCompatActivity {
 
     SecretDetailsPresenter presenter;
+    private RootCoordinator coordinator;
 
     ProgressBar progressBar;
     TextView crackingLabel;
@@ -31,8 +33,9 @@ public class SecretDetailsActivity extends AppCompatActivity {
         DependencyRegistry.shared.inject(this, bundle);
     }
 
-    public void configureWith(SecretDetailsPresenter presenter) {
+    public void configureWith(SecretDetailsPresenter presenter, RootCoordinator rootCoordinator) {
         this.presenter = presenter;
+        coordinator = rootCoordinator;
         this.presenter.crackPassword(password -> {
             progressBar.setVisibility(View.GONE);
             crackingLabel.setText(presenter.getPassword());
@@ -55,9 +58,7 @@ public class SecretDetailsActivity extends AppCompatActivity {
     //region User Interaction
 
     private void finishedClicked() {
-        Intent intent = new Intent(this, SpyListActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
+        coordinator.handleFinishedClicked(this);
     }
 
     //endregion
