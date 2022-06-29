@@ -1,15 +1,14 @@
 package com.example.androidconcurrency2020
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.os.ResultReceiver
 import android.util.Log
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidconcurrency2020.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 const val MESSAGE_KEY = "MESSAGE_KEY"
 const val DICE_NUMBER_KEY = "DICE_NUMBER_KEY"
@@ -60,7 +59,8 @@ class MainActivity : AppCompatActivity() {
 //            val result = fetchSomething()
 //            log(result)
 //        }
-        MyIntentService.startActionFoo(this, "Param 1", "Param 2")
+        val receiver = MyResultReceiver(Handler(Looper.getMainLooper()))
+        MyIntentService.startAction(this, FILE_URL, receiver)
     }
 
     /**
@@ -88,9 +88,13 @@ class MainActivity : AppCompatActivity() {
         Handler().post { binding.scrollView.fullScroll(ScrollView.FOCUS_DOWN) }
     }
 
-    private suspend fun fetchSomething(): String {
-        delay(2000)
-        return "Pham The Tai"
+    private inner class MyResultReceiver(handler: Handler): ResultReceiver(handler) {
+        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+            if (resultCode == Activity.RESULT_OK) {
+                val fileContents = resultData?.getString(FILE_CONTENTS_KEY) ?: "Null"
+                log(fileContents)
+            }
+        }
     }
 
 }
