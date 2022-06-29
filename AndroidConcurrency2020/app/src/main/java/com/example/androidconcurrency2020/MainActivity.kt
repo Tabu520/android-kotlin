@@ -2,24 +2,42 @@ package com.example.androidconcurrency2020
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
-import android.widget.ScrollView
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidconcurrency2020.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.net.URL
-import java.nio.charset.Charset
+import kotlin.concurrent.thread
+import kotlin.random.Random
 
-const val fileUrl = "https://2833069.youcanlearnit.net/lorem_ipsum.txt"
+const val MESSAGE_KEY = "MESSAGE_KEY"
+const val DICE_NUMBER_KEY = "DICE_NUMBER_KEY"
+const val DICE_INDEX_KEY = "DICE_INDEX_KEY"
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
+    var imageViews = emptyArray<ImageView>()
+    val drawables = arrayOf(
+        R.drawable.dice_1,
+        R.drawable.dice_2,
+        R.drawable.dice_3,
+        R.drawable.dice_4,
+        R.drawable.dice_5,
+        R.drawable.dice_6
+    )
+    private val handler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            val result = msg.data
+            val dieNumber = result?.getInt(DICE_NUMBER_KEY) ?: 0
+            val dieIndex = result?.getInt(DICE_INDEX_KEY) ?: 1
+            Log.i(LOG_TAG, "index=$dieIndex, value=$dieNumber")
+            imageViews[dieIndex].setImageResource(drawables[dieNumber - 1])
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,50 +46,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initView()
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
+        mainViewModel.dieValue.observe(this) {
+            imageViews[it.first].setImageResource(drawables[it.second - 1])
+        }
         // Initialize button click handlers
-        with(binding) {
-            runButton.setOnClickListener { runCode() }
-            clearButton.setOnClickListener { clearOutput() }
-        }
-
-        mainViewModel.myData.observe(this) {
-            log(it)
-        }
+        binding.rollButton.setOnClickListener { mainViewModel.rollTheDice() }
 
     }
 
-    /**
-     * Run some code
-     */
-    private fun runCode() {
-        mainViewModel.doWork()
+    private fun initView() {
+        imageViews = arrayOf(binding.die1, binding.die2, binding.die3, binding.die4, binding.die5)
     }
 
-    /**
-     * Clear log display
-     */
-    private fun clearOutput() {
-        binding.logDisplay.text = ""
-        scrollTextToEnd()
-    }
 
-    /**
-     * Log output to logcat and the screen
-     */
-    @Suppress("SameParameterValue")
-    private fun log(message: String) {
-        Log.i(LOG_TAG, message)
-        binding.logDisplay.append(message + "\n")
-        scrollTextToEnd()
-    }
-
-    /**
-     * Scroll to end. Wrapped in post() function so it's the last thing to happen
-     */
-    private fun scrollTextToEnd() {
-        Handler().post { binding.scrollView.fullScroll(ScrollView.FOCUS_DOWN) }
-    }
 
 }

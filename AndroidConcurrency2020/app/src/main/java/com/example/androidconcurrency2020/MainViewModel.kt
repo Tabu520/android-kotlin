@@ -1,36 +1,39 @@
 package com.example.androidconcurrency2020
 
+import android.os.Bundle
+import android.os.Message
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import java.net.URL
 import java.nio.charset.Charset
+import kotlin.concurrent.thread
+import kotlin.random.Random
 
 class MainViewModel: ViewModel() {
 
-    val myData = MutableLiveData<String>()
-    private lateinit var job: Job
+    val dieValue = MutableLiveData<Pair<Int, Int>>()
 
-    fun doWork() {
-        job = viewModelScope.launch {
-            myData.value = fetchSomething()
+    fun rollTheDice() {
+        for (dieIndex in 0 until 5) {
+            viewModelScope.launch {
+                for (i in 1..20) {
+                    val number = getDieValue()
+                    dieValue.value = Pair(dieIndex, number)
+                    Log.i(LOG_TAG, "rollTheDice: $dieIndex -- $number")
+                    delay(100)
+                }
+            }
         }
     }
 
-    fun cancelJob() {
-        try {
-            job.cancel()
-            myData.value = "Job cancelled"
-        } catch (ignore: UninitializedPropertyAccessException) {
-        }
+    /**
+     * Get a random number from 1 to 6
+     */
+    private fun getDieValue(): Int {
+        return Random.nextInt(1, 7)
     }
 
-    private suspend fun fetchSomething(): String {
-        delay(3000)
-        return withContext(Dispatchers.IO) {
-            val url = URL(fileUrl)
-            return@withContext url.readText(Charset.defaultCharset())
-        }
-    }
 }
