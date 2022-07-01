@@ -1,10 +1,11 @@
 package com.example.androidconcurrency2020
 
 import android.app.Activity
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.ResultReceiver
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.*
 import android.util.Log
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,19 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var myService: MyService
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            Log.i(LOG_TAG, "Connecting Service...")
+            val binder = service as MyService.MyServiceBinder
+            myService = binder.getService()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +47,18 @@ class MainActivity : AppCompatActivity() {
             clearButton.setOnClickListener { clearOutput() }
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(this, MyService::class.java).also {
+            bindService(it, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(connection)
     }
 
     /**
@@ -63,22 +89,23 @@ class MainActivity : AppCompatActivity() {
 //        val receiver = MyResultReceiver(Handler(Looper.getMainLooper()))
 //        MyIntentService.startAction(this, FILE_URL, receiver)
 
-        val constraints =
-            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-        val workRequest = OneTimeWorkRequestBuilder<MyWorker>()
-            .setConstraints(constraints)
-            .build()
-        val workManager = WorkManager.getInstance(applicationContext)
-
-        workManager.enqueue(workRequest)
-        workManager.getWorkInfoByIdLiveData(workRequest.id)
-            .observe(this) { workInfo ->
-                if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                    log("Work finished!")
-                    val result = workInfo.outputData.getString(DATA_KEY)
-                    log(result ?: "Null")
-                }
-            }
+//        val constraints =
+//            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+//        val workRequest = OneTimeWorkRequestBuilder<MyWorker>()
+//            .setConstraints(constraints)
+//            .build()
+//        val workManager = WorkManager.getInstance(applicationContext)
+//
+//        workManager.enqueue(workRequest)
+//        workManager.getWorkInfoByIdLiveData(workRequest.id)
+//            .observe(this) { workInfo ->
+//                if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+//                    log("Work finished!")
+//                    val result = workInfo.outputData.getString(DATA_KEY)
+//                    log(result ?: "Null")
+//                }
+//            }
+        myService.doSomething()
     }
 
     /**
