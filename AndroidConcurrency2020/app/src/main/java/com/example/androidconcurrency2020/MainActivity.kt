@@ -8,6 +8,7 @@ import android.os.ResultReceiver
 import android.util.Log
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.*
 import com.example.androidconcurrency2020.databinding.ActivityMainBinding
 
 const val MESSAGE_KEY = "MESSAGE_KEY"
@@ -59,8 +60,25 @@ class MainActivity : AppCompatActivity() {
 //            val result = fetchSomething()
 //            log(result)
 //        }
-        val receiver = MyResultReceiver(Handler(Looper.getMainLooper()))
-        MyIntentService.startAction(this, FILE_URL, receiver)
+//        val receiver = MyResultReceiver(Handler(Looper.getMainLooper()))
+//        MyIntentService.startAction(this, FILE_URL, receiver)
+
+        val constraints =
+            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val workRequest = OneTimeWorkRequestBuilder<MyWorker>()
+            .setConstraints(constraints)
+            .build()
+        val workManager = WorkManager.getInstance(applicationContext)
+
+        workManager.enqueue(workRequest)
+        workManager.getWorkInfoByIdLiveData(workRequest.id)
+            .observe(this) { workInfo ->
+                if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+                    log("Work finished!")
+                    val result = workInfo.outputData.getString(DATA_KEY)
+                    log(result ?: "Null")
+                }
+            }
     }
 
     /**
@@ -85,10 +103,10 @@ class MainActivity : AppCompatActivity() {
      * Scroll to end. Wrapped in post() function so it's the last thing to happen
      */
     private fun scrollTextToEnd() {
-        Handler().post { binding.scrollView.fullScroll(ScrollView.FOCUS_DOWN) }
+        Handler(Looper.getMainLooper()).post { binding.scrollView.fullScroll(ScrollView.FOCUS_DOWN) }
     }
 
-    private inner class MyResultReceiver(handler: Handler): ResultReceiver(handler) {
+    private inner class MyResultReceiver(handler: Handler) : ResultReceiver(handler) {
         override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
             if (resultCode == Activity.RESULT_OK) {
                 val fileContents = resultData?.getString(FILE_CONTENTS_KEY) ?: "Null"
