@@ -9,7 +9,6 @@ import android.os.*
 import android.util.Log
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.*
 import com.example.androidconcurrency2020.databinding.ActivityMainBinding
 
 const val MESSAGE_KEY = "MESSAGE_KEY"
@@ -53,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         Intent(this, MyService::class.java).also {
             bindService(it, connection, Context.BIND_AUTO_CREATE)
+            startService(it)
         }
     }
 
@@ -105,13 +105,14 @@ class MainActivity : AppCompatActivity() {
 //                    log(result ?: "Null")
 //                }
 //            }
-        myService.doSomething()
+        myService.startMusic()
     }
 
     /**
      * Clear log display
      */
     private fun clearOutput() {
+        myService.stopMusic()
         binding.logDisplay.text = ""
         scrollTextToEnd()
     }

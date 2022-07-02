@@ -1,25 +1,117 @@
 package com.example.androidconcurrency2020
 
-import android.app.Service
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+
+const val NOTIFICATION_ACTION_START = "ACTION_START"
+const val NOTIFICATION_ACTION_STOP = "ACTION_STOP"
 
 class MyService : Service() {
 
     private val binder = MyServiceBinder()
+    private lateinit var player: MediaPlayer
 
     override fun onBind(intent: Intent): IBinder {
         return binder
     }
 
-    fun doSomething() {
-        Log.i(LOG_TAG, "The service is doing something!")
-
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
+            NOTIFICATION_ACTION_START -> startMusic()
+            NOTIFICATION_ACTION_STOP -> stopMusic()
+        }
+        return START_STICKY
     }
 
-    inner class MyServiceBinder: Binder() {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(): String {
+        val channelId = "my_service"
+        val channelName = "Music Service"
+        NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE).also {
+            it.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(it)
+        }
+        return channelId
+    }
+
+    private fun displayForegroundNotification() {
+        val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel()
+        } else {
+            ""
+        }
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+
+        val playIntent = getPendingIntent(NOTIFICATION_ACTION_START)
+        val stopIntent = getPendingIntent(NOTIFICATION_ACTION_STOP)
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.notification_image)
+
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Playing music")
+            .setContentText(AUDIO_FILE)
+            .setSmallIcon(R.drawable.ic_baseline_directions_run_24)
+            .setContentIntent(pendingIntent)
+            .addAction(0, "Play", playIntent)
+            .addAction(0, "Stop", stopIntent)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setWhen(0)
+            .setStyle(
+                NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap)
+                    .setSummaryText(AUDIO_FILE)
+            )
+            .build()
+        startForeground(1995, notification)
+    }
+
+    fun startMusic() {
+        try {
+            player.stop()
+            player.release()
+        } catch (e: UninitializedPropertyAccessException) {
+        }
+        player = MediaPlayer().also { mediaPlayer ->
+            assets.openFd(AUDIO_FILE).use { assetFileDesciptor ->
+                mediaPlayer.setDataSource(
+                    assetFileDesciptor.fileDescriptor,
+                    assetFileDesciptor.startOffset,
+                    assetFileDesciptor.length
+                )
+            }
+            mediaPlayer.prepare()
+            mediaPlayer.start()
+        }
+        displayForegroundNotification()
+    }
+
+    fun stopMusic() {
+        try {
+            player.stop()
+        } catch (e: UninitializedPropertyAccessException) {
+        }
+        stopForeground(false)
+    }
+
+    private fun getPendingIntent(action: String): PendingIntent {
+        val serviceIntent = Intent(this, MyService::class.java).also {
+            it.action = action
+        }
+        return PendingIntent.getService(this, 0, serviceIntent, 0)
+    }
+
+    inner class MyServiceBinder : Binder() {
         fun getService() = this@MyService
     }
 }
