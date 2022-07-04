@@ -1,5 +1,6 @@
 package com.avenue.taipt.jetpackcompose
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Bundle
@@ -47,6 +48,7 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -68,6 +70,8 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -77,10 +81,11 @@ import androidx.navigation.compose.rememberNavController
 import com.avenue.taipt.jetpackcompose.model.MyListItem
 import com.avenue.taipt.jetpackcompose.ui.BottomNavItem
 import com.avenue.taipt.jetpackcompose.ui.Navigation
-import com.avenue.taipt.jetpackcompose.ui.theme.BottomNavWithBadgesTheme
-import com.avenue.taipt.jetpackcompose.ui.theme.ComposeMultiSelectTheme
-import com.avenue.taipt.jetpackcompose.ui.theme.ComposeParallaxScrollTheme
-import com.avenue.taipt.jetpackcompose.ui.theme.JetpackComposeTheme
+import com.avenue.taipt.jetpackcompose.ui.theme.*
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.PI
@@ -89,6 +94,7 @@ import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -658,42 +664,108 @@ class MainActivity : ComponentActivity() {
 
         //region Multi-Select LazyColumn
 
+//        setContent {
+//            ComposeMultiSelectTheme {
+//                var items by remember {
+//                    mutableStateOf(
+//                        (1..20).map {
+//                            MyListItem(title = "Item $it", isSelected = false)
+//                        }
+//                    )
+//                }
+//                LazyColumn(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                ) {
+//                    items(items.size) { i ->
+//                        Row(modifier = Modifier
+//                            .fillMaxWidth()
+//                            .clickable {
+//                                items = items.mapIndexed {j, item ->
+//                                    if (i == j) {
+//                                        item.copy(isSelected = !item.isSelected)
+//                                    } else {
+//                                        item
+//                                    }
+//                                }
+//                            }
+//                            .padding(16.dp),
+//                            horizontalArrangement = Arrangement.SpaceBetween,
+//                            verticalAlignment = Alignment.CenterVertically) {
+//                            Text(text = items[i].title)
+//                            if (items[i].isSelected) {
+//                                Icon(
+//                                    imageVector = Icons.Default.Check,
+//                                    contentDescription = "Selected",
+//                                    tint = Color.Green,
+//                                    modifier = Modifier.size(20.dp)
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+        //endregion
+
+        //region Permission Handling
+
         setContent {
-            ComposeMultiSelectTheme {
-                var items by remember {
-                    mutableStateOf(
-                        (1..20).map {
-                            MyListItem(title = "Item $it", isSelected = false)
-                        }
+            PermissionHandlingComposeTheme {
+                val permissionState = rememberMultiplePermissionsState(
+                    permissions = listOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.RECORD_AUDIO
                     )
-                }
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
+                )
+                val lifecycleOwner = LocalLifecycleOwner.current
+                DisposableEffect(
+                    key1 = lifecycleOwner,
+                    effect = {
+                        val observer = LifecycleEventObserver { _, event ->
+                            if (event == Lifecycle.Event.ON_START) {
+                                permissionState.launchMultiplePermissionRequest()
+                            }
+                        }
+                        lifecycleOwner.lifecycle.addObserver(observer)
+
+                        onDispose {
+                            lifecycleOwner.lifecycle.removeObserver(observer)
+                        }
+                    })
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    items(items.size) { i ->
-                        Row(modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                items = items.mapIndexed {j, item ->
-                                    if (i == j) {
-                                        item.copy(isSelected = !item.isSelected)
-                                    } else {
-                                        item
+                    permissionState.permissions.forEach { perm ->
+                        when (perm.permission) {
+                            Manifest.permission.CAMERA -> {
+                                when {
+                                    perm.status.isGranted -> {
+                                        Text(text = "Camera permission accepted!")
+                                    }
+                                    perm.status.shouldShowRationale -> {
+                                        Text(text = "Camera permission is needed to access the camera!")
+                                    }
+                                    perm.status.isPermanentlyDenied() -> {
+                                        Text(text = "Camera permission was permanently denied. You can enable it in the app settings!")
                                     }
                                 }
                             }
-                            .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = items[i].title)
-                            if (items[i].isSelected) {
-                                Icon(
-                                    imageVector = Icons.Default.Check,
-                                    contentDescription = "Selected",
-                                    tint = Color.Green,
-                                    modifier = Modifier.size(20.dp)
-                                )
+                            Manifest.permission.RECORD_AUDIO -> {
+                                when {
+                                    perm.status.isGranted -> {
+                                        Text(text = "Record audio permission accepted!")
+                                    }
+                                    perm.status.shouldShowRationale -> {
+                                        Text(text = "Record audio permission is needed to access the camera!")
+                                    }
+                                    perm.status.isPermanentlyDenied() -> {
+                                        Text(text = "Record audio permission was permanently denied. You can enable it in the app settings!")
+                                    }
+                                }
                             }
                         }
                     }
@@ -708,6 +780,7 @@ class MainActivity : ComponentActivity() {
     private fun Float.toDp(): Dp {
         return (this / Resources.getSystem().displayMetrics.density).dp
     }
+
 }
 
 @Composable

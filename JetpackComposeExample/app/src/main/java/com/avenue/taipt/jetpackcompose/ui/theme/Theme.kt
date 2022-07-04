@@ -93,3 +93,19 @@ fun ComposeMultiSelectTheme(darkTheme: Boolean = isSystemInDarkTheme(), content:
         content = content
     )
 }
+
+@Composable
+fun PermissionHandlingComposeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+    val colors = if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
+
+    MaterialTheme(
+        colors = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
+    )
+}
