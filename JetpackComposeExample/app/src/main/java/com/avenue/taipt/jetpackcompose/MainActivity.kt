@@ -18,10 +18,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -77,9 +74,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.avenue.taipt.jetpackcompose.model.MyListItem
 import com.avenue.taipt.jetpackcompose.ui.BottomNavItem
 import com.avenue.taipt.jetpackcompose.ui.Navigation
 import com.avenue.taipt.jetpackcompose.ui.theme.BottomNavWithBadgesTheme
+import com.avenue.taipt.jetpackcompose.ui.theme.ComposeMultiSelectTheme
 import com.avenue.taipt.jetpackcompose.ui.theme.ComposeParallaxScrollTheme
 import com.avenue.taipt.jetpackcompose.ui.theme.JetpackComposeTheme
 import kotlinx.coroutines.delay
@@ -92,6 +91,8 @@ import kotlin.random.Random
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // region Part 1 + 2
         //--- part 1 + 2 - WIDTH + HEIGHT ---//
 //        setContent {
 //            Row(
@@ -107,8 +108,9 @@ class MainActivity : ComponentActivity() {
 //                Text(text = "!!!!!")
 //            }
 //        }
+        //endregion
 
-
+        //region part 3
         //--- part 3 - DRAW BORDER AND OFFSET ---//
 //        setContent {
 //            Column(
@@ -139,7 +141,10 @@ class MainActivity : ComponentActivity() {
 //                Text(text = "!!!!!")
 //            }
 //        }
+        //endregion
 
+
+        //region Part 4
         //--- part 4 - CARD: Image with Text and Gradient color ---//
 //        setContent {
 //            val painter = painterResource(id = R.drawable.cat)
@@ -157,6 +162,7 @@ class MainActivity : ComponentActivity() {
 //                )
 //            }
 //        }
+        //endregion
 
         // FONT FAMILY
         val fontFamily = FontFamily(
@@ -165,6 +171,7 @@ class MainActivity : ComponentActivity() {
             Font(R.font.oxygen_regular, FontWeight.Normal)
         )
 
+        //region Part 5
         //--- part 5: STYLING TEXT ---//
 //        setContent {
 //            Box(
@@ -204,7 +211,9 @@ class MainActivity : ComponentActivity() {
 //                )
 //            }
 //        }
+        //endregion
 
+        //region Part 6
         //--- part 6: STATE ---//
 //        setContent {
 //            Column(Modifier.fillMaxSize()) {
@@ -227,7 +236,10 @@ class MainActivity : ComponentActivity() {
 //                )
 //            }
 //        }
+        //endregion
 
+
+        //region Part 7
         //--- part 7 - Textfields, Buttons & Showing Snackbars ---//
 //        setContent {
 //            val scaffoldState = rememberScaffoldState()
@@ -269,7 +281,9 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
 //        }
+        //endregion
 
+        //region Part 8
         //--- part 8 - List ---//
 //        setContent {
 //            LazyColumn {
@@ -301,7 +315,10 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
 //        }
+        //endregion
 
+
+        //region Part 9
         //--- part 9 - Constraint Layout ---//
 //        setContent {
 //            val constraints = ConstraintSet {
@@ -335,7 +352,9 @@ class MainActivity : ComponentActivity() {
 //                )
 //            }
 //        }
+        //endregion
 
+        //region Part 10
         //--- part 10: Side Effects & Effect Handlers ---//
 //        setContent {
 //            val scaffoldState = rememberScaffoldState()
@@ -356,7 +375,9 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
 //        }
+        //endregion
 
+        //region Part 11
         //--- part 11: Simple Animations ---//
 //        setContent {
 //            var sizeState by remember { mutableStateOf(200.dp) }
@@ -399,7 +420,10 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
 //        }
+        //endregion
 
+
+        //region Part 12
         //--- part 12: Animated Circular Progress Bar ---//
 //        setContent {
 //            Box(
@@ -409,7 +433,9 @@ class MainActivity : ComponentActivity() {
 //                CircularProgressBar(percentage = 0.8f, number = 100)
 //            }
 //        }
+        //endregion
 
+        //region Part 13
         //--- part 13: Draggable Music Knob ---//
 //        setContent {
 //            Box(
@@ -445,7 +471,9 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
 //        }
+        //endregion
 
+        //region Part 16
         //--- part 16: 3D Animated Drop Down ---//
 //        setContent {
 //            Surface(
@@ -466,12 +494,17 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
 //        }
+        //endregion
 
+        //region Navigation
         // Navigation
 //        setContent {
 //            Navigation()
 //        }
+        //endregion
 
+
+        //region Bottom Navigation
         // Bottom Navigation
 //        setContent {
 //            BottomNavWithBadgesTheme {
@@ -509,117 +542,166 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
 //        }
+        //endregion
 
-        // Multi-Layer Parallax Scroll Effect
+        //region Multi-Layer Parallax Scroll Effect
+//        setContent {
+//            ComposeParallaxScrollTheme {
+//
+//                val moonScrollSpeed = 0.08f
+//                val midBgScrollSpeed = 0.03f
+//
+//                val imageHeight = (LocalConfiguration.current.screenHeightDp * (2f / 5f)).dp
+//                val lazyListState = rememberLazyListState()
+//
+//                var moonOffset by remember {
+//                    mutableStateOf(0f)
+//                }
+//                var midBgOffset by remember {
+//                    mutableStateOf(0f)
+//                }
+//
+//                val nestedScrollConnection = object : NestedScrollConnection {
+//                    override fun onPreScroll(
+//                        available: Offset,
+//                        source: NestedScrollSource
+//                    ): Offset {
+//                        val delta = available.y
+//                        val layoutInfo = lazyListState.layoutInfo
+//                        // Check if the first item is visible
+//                        if (lazyListState.firstVisibleItemIndex == 0) {
+//                            return Offset.Zero
+//                        }
+//                        if (layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1) {
+//                            return Offset.Zero
+//                        }
+//                        moonOffset += delta * moonScrollSpeed
+//                        midBgOffset += delta * midBgScrollSpeed
+//                        return Offset.Zero
+//                    }
+//                }
+//
+//                LazyColumn(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .nestedScroll(nestedScrollConnection),
+//                    state = lazyListState
+//                ) {
+//                    items(10) {
+//                        Text(
+//                            text = "Sample item",
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(16.dp)
+//                        )
+//                    }
+//
+//                    item {
+//                        Box(
+//                            modifier = Modifier
+//                                .clipToBounds()
+//                                .fillMaxWidth()
+//                                .height(imageHeight + midBgOffset.toDp())
+//                                .background(
+//                                    Brush.verticalGradient(
+//                                        listOf(
+//                                            Color(0xFFf36b21),
+//                                            Color(0xFFf9a521),
+//                                        )
+//                                    )
+//                                )
+//                        ) {
+//                            Image(
+//                                painter = painterResource(id = R.drawable.ic_moonbg),
+//                                contentDescription = "moon",
+//                                contentScale = ContentScale.FillWidth,
+//                                alignment = BottomCenter,
+//                                modifier = Modifier
+//                                    .matchParentSize()
+//                                    .graphicsLayer {
+//                                        translationY = moonOffset
+//                                    }
+//                            )
+//                            Image(
+//                                painter = painterResource(id = R.drawable.ic_midbg),
+//                                contentDescription = "mid bg",
+//                                contentScale = ContentScale.FillWidth,
+//                                alignment = BottomCenter,
+//                                modifier = Modifier
+//                                    .matchParentSize()
+//                                    .graphicsLayer {
+//                                        translationY = midBgOffset
+//                                    }
+//                            )
+//                            Image(
+//                                painter = painterResource(id = R.drawable.ic_outerbg),
+//                                contentDescription = "outer bg",
+//                                contentScale = ContentScale.FillWidth,
+//                                alignment = BottomCenter,
+//                                modifier = Modifier.matchParentSize()
+//                            )
+//                        }
+//                    }
+//
+//                    items(20) {
+//                        Text(
+//                            text = "Sample item",
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(16.dp)
+//                        )
+//                    }
+//                }
+//            }
+//        }
+        //endregion
+
+        //region Multi-Select LazyColumn
+
         setContent {
-            ComposeParallaxScrollTheme {
-
-                val moonScrollSpeed = 0.08f
-                val midBgScrollSpeed = 0.03f
-
-                val imageHeight = (LocalConfiguration.current.screenHeightDp * (2f / 5f)).dp
-                val lazyListState = rememberLazyListState()
-
-                var moonOffset by remember {
-                    mutableStateOf(0f)
-                }
-                var midBgOffset by remember {
-                    mutableStateOf(0f)
-                }
-
-                val nestedScrollConnection = object : NestedScrollConnection {
-                    override fun onPreScroll(
-                        available: Offset,
-                        source: NestedScrollSource
-                    ): Offset {
-                        val delta = available.y
-                        val layoutInfo = lazyListState.layoutInfo
-                        // Check if the first item is visible
-                        if (lazyListState.firstVisibleItemIndex == 0) {
-                            return Offset.Zero
+            ComposeMultiSelectTheme {
+                var items by remember {
+                    mutableStateOf(
+                        (1..20).map {
+                            MyListItem(title = "Item $it", isSelected = false)
                         }
-                        if (layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1) {
-                            return Offset.Zero
-                        }
-                        moonOffset += delta * moonScrollSpeed
-                        midBgOffset += delta * midBgScrollSpeed
-                        return Offset.Zero
-                    }
+                    )
                 }
-
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .nestedScroll(nestedScrollConnection),
-                    state = lazyListState
+                        .fillMaxSize()
                 ) {
-                    items(10) {
-                        Text(
-                            text = "Sample item",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        )
-                    }
-
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .clipToBounds()
-                                .fillMaxWidth()
-                                .height(imageHeight + midBgOffset.toDp())
-                                .background(
-                                    Brush.verticalGradient(
-                                        listOf(
-                                            Color(0xFFf36b21),
-                                            Color(0xFFf9a521),
-                                        )
-                                    )
+                    items(items.size) { i ->
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                items = items.mapIndexed {j, item ->
+                                    if (i == j) {
+                                        item.copy(isSelected = !item.isSelected)
+                                    } else {
+                                        item
+                                    }
+                                }
+                            }
+                            .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = items[i].title)
+                            if (items[i].isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = "Selected",
+                                    tint = Color.Green,
+                                    modifier = Modifier.size(20.dp)
                                 )
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_moonbg),
-                                contentDescription = "moon",
-                                contentScale = ContentScale.FillWidth,
-                                alignment = BottomCenter,
-                                modifier = Modifier
-                                    .matchParentSize()
-                                    .graphicsLayer {
-                                        translationY = moonOffset
-                                    }
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_midbg),
-                                contentDescription = "mid bg",
-                                contentScale = ContentScale.FillWidth,
-                                alignment = BottomCenter,
-                                modifier = Modifier
-                                    .matchParentSize()
-                                    .graphicsLayer {
-                                        translationY = midBgOffset
-                                    }
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_outerbg),
-                                contentDescription = "outer bg",
-                                contentScale = ContentScale.FillWidth,
-                                alignment = BottomCenter,
-                                modifier = Modifier.matchParentSize()
-                            )
+                            }
                         }
-                    }
-
-                    items(20) {
-                        Text(
-                            text = "Sample item",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        )
                     }
                 }
             }
         }
+
+        //endregion
 
     }
 
