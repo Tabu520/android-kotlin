@@ -88,6 +88,8 @@ import com.avenue.taipt.jetpackcompose.model.MyListItem
 import com.avenue.taipt.jetpackcompose.model.User
 import com.avenue.taipt.jetpackcompose.ui.BottomNavItem
 import com.avenue.taipt.jetpackcompose.ui.Navigation
+import com.avenue.taipt.jetpackcompose.ui.WindowInfo
+import com.avenue.taipt.jetpackcompose.ui.rememberWindowInfo
 import com.avenue.taipt.jetpackcompose.ui.theme.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -787,8 +789,8 @@ class MainActivity : ComponentActivity() {
 
         //region Compose Navigation with Library
 
-        setContent {
-            ComposeNavDestinationsDemoTheme {
+//        setContent {
+//            ComposeNavDestinationsDemoTheme {
 //                val navController = rememberNavController()
 //                NavHost(
 //                    navController = navController,
@@ -840,8 +842,78 @@ class MainActivity : ComponentActivity() {
 //                    }
 //                }
 
+//
+//                DestinationsNavHost(navGraph = NavGraphs.root)
+//            }
+//        }
 
-                DestinationsNavHost(navGraph = NavGraphs.root)
+        //endregion
+
+        //region Support All Screen Sizes
+        setContent {
+            SupportAllScreenSizesComposeTheme {
+                val windowInfo = rememberWindowInfo()
+                if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Compact) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        // List 1
+                        items(10) {
+                            Text(
+                                text = "Item $it",
+                                fontSize = 25.sp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color.Cyan)
+                                    .padding(16.dp)
+                            )
+                        }
+                        // List 2
+                        items(10) {
+                            Text(
+                                text = "Item $it",
+                                fontSize = 25.sp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color.Green)
+                                    .padding(16.dp)
+                            )
+                        }
+                    }
+                } else {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        LazyColumn(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            // List 1
+                            items(10) {
+                                Text(
+                                    text = "Item $it",
+                                    fontSize = 25.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.Cyan)
+                                        .padding(16.dp)
+                                )
+                            }
+                        }
+                        LazyColumn(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            // List 2
+                            items(10) {
+                                Text(
+                                    text = "Item $it",
+                                    fontSize = 25.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.Green)
+                                        .padding(16.dp)
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
 
