@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
+import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -31,10 +33,7 @@ import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.*
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -51,6 +50,7 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -68,10 +68,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ChainStyle
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintSet
-import androidx.constraintlayout.compose.Dimension
+import androidx.constraintlayout.compose.*
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
@@ -850,69 +847,92 @@ class MainActivity : ComponentActivity() {
         //endregion
 
         //region Support All Screen Sizes
+
+//        setContent {
+//            SupportAllScreenSizesComposeTheme {
+//                val windowInfo = rememberWindowInfo()
+//                if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Compact) {
+//                    LazyColumn(
+//                        modifier = Modifier.fillMaxSize()
+//                    ) {
+//                        // List 1
+//                        items(10) {
+//                            Text(
+//                                text = "Item $it",
+//                                fontSize = 25.sp,
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .background(Color.Cyan)
+//                                    .padding(16.dp)
+//                            )
+//                        }
+//                        // List 2
+//                        items(10) {
+//                            Text(
+//                                text = "Item $it",
+//                                fontSize = 25.sp,
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .background(Color.Green)
+//                                    .padding(16.dp)
+//                            )
+//                        }
+//                    }
+//                } else {
+//                    Row(modifier = Modifier.fillMaxWidth()) {
+//                        LazyColumn(
+//                            modifier = Modifier.weight(1f)
+//                        ) {
+//                            // List 1
+//                            items(10) {
+//                                Text(
+//                                    text = "Item $it",
+//                                    fontSize = 25.sp,
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .background(Color.Cyan)
+//                                        .padding(16.dp)
+//                                )
+//                            }
+//                        }
+//                        LazyColumn(
+//                            modifier = Modifier.weight(1f)
+//                        ) {
+//                            // List 2
+//                            items(10) {
+//                                Text(
+//                                    text = "Item $it",
+//                                    fontSize = 25.sp,
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .background(Color.Green)
+//                                        .padding(16.dp)
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+        //endregion
+
+        //region Complex Animations With MotionLayout
+
         setContent {
-            SupportAllScreenSizesComposeTheme {
-                val windowInfo = rememberWindowInfo()
-                if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Compact) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        // List 1
-                        items(10) {
-                            Text(
-                                text = "Item $it",
-                                fontSize = 25.sp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.Cyan)
-                                    .padding(16.dp)
-                            )
-                        }
-                        // List 2
-                        items(10) {
-                            Text(
-                                text = "Item $it",
-                                fontSize = 25.sp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.Green)
-                                    .padding(16.dp)
-                            )
-                        }
+            MotionLayoutComposeTheme {
+                Column {
+                    var progress by remember {
+                        mutableStateOf(0f)
                     }
-                } else {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        LazyColumn(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            // List 1
-                            items(10) {
-                                Text(
-                                    text = "Item $it",
-                                    fontSize = 25.sp,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(Color.Cyan)
-                                        .padding(16.dp)
-                                )
-                            }
-                        }
-                        LazyColumn(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            // List 2
-                            items(10) {
-                                Text(
-                                    text = "Item $it",
-                                    fontSize = 25.sp,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(Color.Green)
-                                        .padding(16.dp)
-                                )
-                            }
-                        }
-                    }
+                    ProfileHeader(progress = progress)
+                    Spacer(modifier = Modifier.height(32.dp))
+                    Slider(
+                        value = progress, onValueChange = {
+                            progress = it
+                        },
+                        modifier = Modifier.padding(horizontal = 32.dp)
+                    )
                 }
             }
         }
@@ -925,6 +945,49 @@ class MainActivity : ComponentActivity() {
         return (this / Resources.getSystem().displayMetrics.density).dp
     }
 
+}
+
+@OptIn(ExperimentalMotionApi::class)
+@Composable
+fun ProfileHeader(progress: Float) {
+    val context = LocalContext.current
+    val motionScene = remember {
+        context.resources
+            .openRawResource(R.raw.motion_scene)
+            .readBytes()
+            .decodeToString()
+    }
+    MotionLayout(
+        motionScene = MotionScene(content = motionScene),
+        progress = progress,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        val properties = motionProperties(id = "profile_pic")
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.DarkGray)
+                .layoutId("box")
+        )
+        Image(
+            painter = painterResource(id = R.drawable.cat),
+            contentDescription = null,
+            modifier = Modifier
+                .clip(CircleShape)
+                .border(
+                    width = 2.dp,
+                    color = properties.value.color("background"),
+                    shape = CircleShape
+                )
+                .layoutId("profile_pic")
+        )
+        Text(
+            text = "Tai, Pham The",
+            fontSize = 24.sp,
+            modifier = Modifier.layoutId("username"),
+            color = properties.value.color("background")
+        )
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
