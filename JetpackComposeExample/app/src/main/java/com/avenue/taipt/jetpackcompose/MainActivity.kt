@@ -3,12 +3,14 @@ package com.avenue.taipt.jetpackcompose
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -74,11 +76,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.avenue.taipt.jetpackcompose.destinations.PostScreenDestination
+import com.avenue.taipt.jetpackcompose.destinations.ProfileScreenDestination
 import com.avenue.taipt.jetpackcompose.model.MyListItem
+import com.avenue.taipt.jetpackcompose.model.User
 import com.avenue.taipt.jetpackcompose.ui.BottomNavItem
 import com.avenue.taipt.jetpackcompose.ui.Navigation
 import com.avenue.taipt.jetpackcompose.ui.theme.*
@@ -86,14 +93,22 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,7 +163,6 @@ class MainActivity : ComponentActivity() {
 //            }
 //        }
         //endregion
-
 
         //region Part 4
         //--- part 4 - CARD: Image with Text and Gradient color ---//
@@ -244,7 +258,6 @@ class MainActivity : ComponentActivity() {
 //        }
         //endregion
 
-
         //region Part 7
         //--- part 7 - Textfields, Buttons & Showing Snackbars ---//
 //        setContent {
@@ -322,7 +335,6 @@ class MainActivity : ComponentActivity() {
 //            }
 //        }
         //endregion
-
 
         //region Part 9
         //--- part 9 - Constraint Layout ---//
@@ -428,7 +440,6 @@ class MainActivity : ComponentActivity() {
 //        }
         //endregion
 
-
         //region Part 12
         //--- part 12: Animated Circular Progress Bar ---//
 //        setContent {
@@ -508,7 +519,6 @@ class MainActivity : ComponentActivity() {
 //            Navigation()
 //        }
         //endregion
-
 
         //region Bottom Navigation
         // Bottom Navigation
@@ -711,65 +721,127 @@ class MainActivity : ComponentActivity() {
 
         //region Permission Handling
 
-        setContent {
-            PermissionHandlingComposeTheme {
-                val permissionState = rememberMultiplePermissionsState(
-                    permissions = listOf(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.RECORD_AUDIO
-                    )
-                )
-                val lifecycleOwner = LocalLifecycleOwner.current
-                DisposableEffect(
-                    key1 = lifecycleOwner,
-                    effect = {
-                        val observer = LifecycleEventObserver { _, event ->
-                            if (event == Lifecycle.Event.ON_START) {
-                                permissionState.launchMultiplePermissionRequest()
-                            }
-                        }
-                        lifecycleOwner.lifecycle.addObserver(observer)
+//        setContent {
+//            PermissionHandlingComposeTheme {
+//                val permissionState = rememberMultiplePermissionsState(
+//                    permissions = listOf(
+//                        Manifest.permission.CAMERA,
+//                        Manifest.permission.RECORD_AUDIO
+//                    )
+//                )
+//                val lifecycleOwner = LocalLifecycleOwner.current
+//                DisposableEffect(
+//                    key1 = lifecycleOwner,
+//                    effect = {
+//                        val observer = LifecycleEventObserver { _, event ->
+//                            if (event == Lifecycle.Event.ON_START) {
+//                                permissionState.launchMultiplePermissionRequest()
+//                            }
+//                        }
+//                        lifecycleOwner.lifecycle.addObserver(observer)
+//
+//                        onDispose {
+//                            lifecycleOwner.lifecycle.removeObserver(observer)
+//                        }
+//                    })
+//                Column(
+//                    modifier = Modifier.fillMaxSize(),
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+//                    verticalArrangement = Arrangement.Center
+//                ) {
+//                    permissionState.permissions.forEach { perm ->
+//                        when (perm.permission) {
+//                            Manifest.permission.CAMERA -> {
+//                                when {
+//                                    perm.status.isGranted -> {
+//                                        Text(text = "Camera permission accepted!")
+//                                    }
+//                                    perm.status.shouldShowRationale -> {
+//                                        Text(text = "Camera permission is needed to access the camera!")
+//                                    }
+//                                    perm.status.isPermanentlyDenied() -> {
+//                                        Text(text = "Camera permission was permanently denied. You can enable it in the app settings!")
+//                                    }
+//                                }
+//                            }
+//                            Manifest.permission.RECORD_AUDIO -> {
+//                                when {
+//                                    perm.status.isGranted -> {
+//                                        Text(text = "Record audio permission accepted!")
+//                                    }
+//                                    perm.status.shouldShowRationale -> {
+//                                        Text(text = "Record audio permission is needed to access the camera!")
+//                                    }
+//                                    perm.status.isPermanentlyDenied() -> {
+//                                        Text(text = "Record audio permission was permanently denied. You can enable it in the app settings!")
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
-                        onDispose {
-                            lifecycleOwner.lifecycle.removeObserver(observer)
-                        }
-                    })
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    permissionState.permissions.forEach { perm ->
-                        when (perm.permission) {
-                            Manifest.permission.CAMERA -> {
-                                when {
-                                    perm.status.isGranted -> {
-                                        Text(text = "Camera permission accepted!")
-                                    }
-                                    perm.status.shouldShowRationale -> {
-                                        Text(text = "Camera permission is needed to access the camera!")
-                                    }
-                                    perm.status.isPermanentlyDenied() -> {
-                                        Text(text = "Camera permission was permanently denied. You can enable it in the app settings!")
-                                    }
-                                }
-                            }
-                            Manifest.permission.RECORD_AUDIO -> {
-                                when {
-                                    perm.status.isGranted -> {
-                                        Text(text = "Record audio permission accepted!")
-                                    }
-                                    perm.status.shouldShowRationale -> {
-                                        Text(text = "Record audio permission is needed to access the camera!")
-                                    }
-                                    perm.status.isPermanentlyDenied() -> {
-                                        Text(text = "Record audio permission was permanently denied. You can enable it in the app settings!")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+        //endregion
+
+        //region Compose Navigation with Library
+
+        setContent {
+            ComposeNavDestinationsDemoTheme {
+//                val navController = rememberNavController()
+//                NavHost(
+//                    navController = navController,
+//                    startDestination = "login"
+//                ) {
+//                    //Login Screen
+//                    composable("login") {
+//                        LoginScreen(navController = navController)
+//                    }
+//
+//                    //Profile Screen
+//                    composable(
+//                        route = "profile/{name}/{userId}/{timestamp}",
+//                        arguments = listOf(
+//                            navArgument("name") {
+//                                type = NavType.StringType
+//                            },
+//                            navArgument("userId") {
+//                                type = NavType.StringType
+//                            },
+//                            navArgument("timestamp") {
+//                                type = NavType.LongType
+//                            }
+//                        )
+//                    ) {
+//                        val name = it.arguments?.getString("name") ?: "Null"
+//                        val userId = it.arguments?.getString("userId") ?: "Null"
+//                        val timestamp = it.arguments?.getLong("timestamp") ?: 0
+//                        ProfileScreen(
+//                            navController = navController,
+//                            name = name,
+//                            userId = userId,
+//                            created = timestamp
+//                        )
+//                    }
+//
+//                    //Post Screen
+//                    composable(
+//                        route = "post/{showOnlyPostByUser}",
+//                        arguments = listOf(
+//                            navArgument("showOnlyPostByUser") {
+//                                type = NavType.BoolType
+//                                defaultValue = false
+//                            }
+//                        )
+//                    ) {
+//                        val showOnlyPostByUser = it.arguments?.getBoolean("showOnlyPostByUser") ?: false
+//                        PostScreen(showOnlyPostByUser)
+//                    }
+//                }
+
+
+                DestinationsNavHost(navGraph = NavGraphs.root)
             }
         }
 
@@ -781,6 +853,78 @@ class MainActivity : ComponentActivity() {
         return (this / Resources.getSystem().displayMetrics.density).dp
     }
 
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@RootNavGraph(start = true)
+@Destination
+@Composable
+fun LoginScreen(
+    navigator: DestinationsNavigator
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Login Screen")
+        Button(onClick = {
+            navigator.navigate(
+                ProfileScreenDestination(
+                    User(
+                        name = "Tai, Pham The",
+                        id = "tai",
+                        created = LocalDateTime.now()
+                    )
+                )
+            )
+        }) {
+            Text(text = "Go to Profile Screen")
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Destination
+@Composable
+fun ProfileScreen(
+    navigator: DestinationsNavigator,
+    user: User
+) {
+//    val user = remember {
+//        User(
+//            name = name,
+//            id = userId,
+//            created = LocalDateTime.ofInstant(Instant.ofEpochMilli(created), ZoneId.systemDefault())
+//        )
+//    }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Profile screen $user", textAlign = TextAlign.Center)
+        Button(onClick = {
+            navigator.navigate(
+                PostScreenDestination(showOnlyPostByUser = true)
+            )
+        }) {
+            Text(text = "Go to Post Screen")
+        }
+    }
+}
+
+@Destination
+@Composable
+fun PostScreen(
+    showOnlyPostByUser: Boolean = false
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Post Screen, $showOnlyPostByUser")
+    }
 }
 
 @Composable
