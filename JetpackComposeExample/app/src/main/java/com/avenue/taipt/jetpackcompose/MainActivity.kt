@@ -11,6 +11,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
@@ -71,6 +72,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.*
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -919,20 +921,63 @@ class MainActivity : ComponentActivity() {
 
         //region Complex Animations With MotionLayout
 
+//        setContent {
+//            MotionLayoutComposeTheme {
+//                Column {
+//                    var progress by remember {
+//                        mutableStateOf(0f)
+//                    }
+//                    ProfileHeader(progress = progress)
+//                    Spacer(modifier = Modifier.height(32.dp))
+//                    Slider(
+//                        value = progress, onValueChange = {
+//                            progress = it
+//                        },
+//                        modifier = Modifier.padding(horizontal = 32.dp)
+//                    )
+//                }
+//            }
+//        }
+
+        //endregion
+
+        //region Pagination
+
         setContent {
-            MotionLayoutComposeTheme {
-                Column {
-                    var progress by remember {
-                        mutableStateOf(0f)
+            ComposePagingYTTheme {
+                val viewModel = viewModel<MainViewModel>()
+                val state = viewModel.state
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(state.items.size) { i ->
+                        val item = state.items[i]
+                        if (i >= state.items.size - 1 && !state.endReached && !state.isLoading) {
+                            viewModel.loadNextItems()
+                        }
+                        Column(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                        ) {
+                            Text(
+                                text = item.title,
+                                fontSize = 20.sp,
+                                color = Color.Black,
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(text = item.description)
+                        }
                     }
-                    ProfileHeader(progress = progress)
-                    Spacer(modifier = Modifier.height(32.dp))
-                    Slider(
-                        value = progress, onValueChange = {
-                            progress = it
-                        },
-                        modifier = Modifier.padding(horizontal = 32.dp)
-                    )
+                    item {
+                        if (state.isLoading) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                    }
                 }
             }
         }
