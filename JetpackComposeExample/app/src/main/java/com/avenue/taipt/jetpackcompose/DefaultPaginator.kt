@@ -1,6 +1,7 @@
 package com.avenue.taipt.jetpackcompose
 
 import com.avenue.taipt.jetpackcompose.model.Paginator
+import com.avenue.taipt.jetpackcompose.model.PagingListItem
 
 class DefaultPaginator<Key, Item>(
     private val initialKey: Key,
@@ -9,13 +10,15 @@ class DefaultPaginator<Key, Item>(
     private inline val getNextKey: suspend (List<Item>) -> Key,
     private inline val onError: suspend (Throwable?) -> Unit,
     private inline val onSuccess: suspend (items: List<Item>, newKey: Key) -> Unit
-): Paginator<Key, Item> {
+) : Paginator<Key, Item> {
 
     private var currentKey = initialKey
     private var isMakingRequest = false
 
     override suspend fun loadNextItems() {
-        if (isMakingRequest) return
+        if (isMakingRequest) {
+            return
+        }
         isMakingRequest = true
         onLoadUpdated(true)
         val result = onRequest(currentKey)

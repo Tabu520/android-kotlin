@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -110,7 +111,7 @@ import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
-    @OptIn(ExperimentalPermissionsApi::class)
+    @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -943,39 +944,90 @@ class MainActivity : ComponentActivity() {
 
         //region Pagination
 
+//        setContent {
+//            ComposePagingYTTheme {
+//                val viewModel = viewModel<MainViewModel>()
+//                val state = viewModel.state
+//                LazyColumn(modifier = Modifier.fillMaxSize()) {
+//                    items(state.items.size) { i ->
+//                        val item = state.items[i]
+//                        if (i >= state.items.size - 1 && !state.endReached && !state.isLoading) {
+//                            viewModel.loadNextItems()
+//                        }
+//                        Column(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(16.dp)
+//                        ) {
+//                            Text(
+//                                text = item.title,
+//                                fontSize = 20.sp,
+//                                color = Color.Black,
+//                            )
+//                            Spacer(modifier = Modifier.height(8.dp))
+//                            Text(text = item.description)
+//                        }
+//                    }
+//                    item {
+//                        if (state.isLoading) {
+//                            Row(
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .padding(8.dp),
+//                                horizontalArrangement = Arrangement.Center
+//                            ) {
+//                                CircularProgressIndicator()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+        //endregion
+
+        //region Bottom Sheet
+
         setContent {
-            ComposePagingYTTheme {
-                val viewModel = viewModel<MainViewModel>()
-                val state = viewModel.state
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(state.items.size) { i ->
-                        val item = state.items[i]
-                        if (i >= state.items.size - 1 && !state.endReached && !state.isLoading) {
-                            viewModel.loadNextItems()
-                        }
-                        Column(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
+            BottomSheetComposeTheme {
+                val sheetState = rememberBottomSheetState(
+                    initialValue = BottomSheetValue.Collapsed,
+                    // animation here
+                    animationSpec = spring(
+                        dampingRatio = Spring.StiffnessMedium
+                    )
+                )
+                val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
+                val scope = rememberCoroutineScope()
+                BottomSheetScaffold(
+                    scaffoldState = scaffoldState,
+                    sheetContent = {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(300.dp),
+                            contentAlignment = Center
                         ) {
-                            Text(
-                                text = item.title,
-                                fontSize = 20.sp,
-                                color = Color.Black,
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(text = item.description)
+                            Text(text = "Bottom sheet", fontSize = 60.sp)
                         }
-                    }
-                    item {
-                        if (state.isLoading) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                CircularProgressIndicator()
+                    },
+                    sheetBackgroundColor = Color.Green,
+                    sheetPeekHeight = 0.dp
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Center
+                    ) {
+                        Button(onClick = {
+                            scope.launch {
+                                if (sheetState.isCollapsed) {
+                                    sheetState.expand()
+                                } else {
+                                    sheetState.collapse()
+                                }
                             }
+                        }) {
+                            Text(text = "Bottom sheet fraction: ${sheetState.progress.fraction}")
                         }
                     }
                 }
@@ -1045,7 +1097,7 @@ fun LoginScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Text(text = "Login Screen")
         Button(onClick = {
@@ -1081,7 +1133,7 @@ fun ProfileScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Text(text = "Profile screen $user", textAlign = TextAlign.Center)
         Button(onClick = {
@@ -1101,7 +1153,7 @@ fun PostScreen(
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Center
     ) {
         Text(text = "Post Screen, $showOnlyPostByUser")
     }
@@ -1219,7 +1271,7 @@ fun CircularProgressBar(
     }
 
     Box(
-        contentAlignment = Alignment.Center,
+        contentAlignment = Center,
         modifier = Modifier.size(radius * 2f)
     ) {
         Canvas(modifier = Modifier.size(radius * 2f)) {
@@ -1247,7 +1299,7 @@ fun VolumeBar(
     barCount: Int = 10
 ) {
     BoxWithConstraints(
-        contentAlignment = Alignment.Center,
+        contentAlignment = Center,
         modifier = modifier
     ) {
         val barWidth = remember {
@@ -1371,7 +1423,7 @@ fun DropDown(
         }
         Spacer(modifier = Modifier.height(10.dp))
         Box(
-            contentAlignment = Alignment.Center,
+            contentAlignment = Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .graphicsLayer {
@@ -1464,7 +1516,7 @@ fun BottomNavigationBar(
 fun HomeScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Center
     ) {
         Text(text = "Home screen")
     }
@@ -1474,7 +1526,7 @@ fun HomeScreen() {
 fun ChatScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Center
     ) {
         Text(text = "Chat screen")
     }
@@ -1484,7 +1536,7 @@ fun ChatScreen() {
 fun SettingsScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Center
     ) {
         Text(text = "Settings screen")
     }
