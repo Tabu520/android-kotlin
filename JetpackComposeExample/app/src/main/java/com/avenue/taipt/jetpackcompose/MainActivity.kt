@@ -84,12 +84,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.avenue.taipt.jetpackcompose.destinations.PostScreenDestination
 import com.avenue.taipt.jetpackcompose.destinations.ProfileScreenDestination
+import com.avenue.taipt.jetpackcompose.model.MenuItem
 import com.avenue.taipt.jetpackcompose.model.MyListItem
 import com.avenue.taipt.jetpackcompose.model.User
-import com.avenue.taipt.jetpackcompose.ui.BottomNavItem
-import com.avenue.taipt.jetpackcompose.ui.Navigation
-import com.avenue.taipt.jetpackcompose.ui.WindowInfo
-import com.avenue.taipt.jetpackcompose.ui.rememberWindowInfo
+import com.avenue.taipt.jetpackcompose.ui.*
 import com.avenue.taipt.jetpackcompose.ui.theme.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -110,6 +108,7 @@ import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @RequiresApi(Build.VERSION_CODES.O)
     @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -988,48 +987,100 @@ class MainActivity : ComponentActivity() {
 
         //region Bottom Sheet
 
+//        setContent {
+//            BottomSheetComposeTheme {
+//                val sheetState = rememberBottomSheetState(
+//                    initialValue = BottomSheetValue.Collapsed,
+//                    // animation here
+//                    animationSpec = spring(
+//                        dampingRatio = Spring.StiffnessMedium
+//                    )
+//                )
+//                val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
+//                val scope = rememberCoroutineScope()
+//                BottomSheetScaffold(
+//                    scaffoldState = scaffoldState,
+//                    sheetContent = {
+//                        Box(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .height(300.dp),
+//                            contentAlignment = Center
+//                        ) {
+//                            Text(text = "Bottom sheet", fontSize = 60.sp)
+//                        }
+//                    },
+//                    sheetBackgroundColor = Color.Green,
+//                    sheetPeekHeight = 0.dp
+//                ) {
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Center
+//                    ) {
+//                        Button(onClick = {
+//                            scope.launch {
+//                                if (sheetState.isCollapsed) {
+//                                    sheetState.expand()
+//                                } else {
+//                                    sheetState.collapse()
+//                                }
+//                            }
+//                        }) {
+//                            Text(text = "Bottom sheet fraction: ${sheetState.progress.fraction}")
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+        //endregion
+
+        //region Navigation Drawer
+
         setContent {
-            BottomSheetComposeTheme {
-                val sheetState = rememberBottomSheetState(
-                    initialValue = BottomSheetValue.Collapsed,
-                    // animation here
-                    animationSpec = spring(
-                        dampingRatio = Spring.StiffnessMedium
-                    )
-                )
-                val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
+            NavigationDrawerComposeTheme {
                 val scope = rememberCoroutineScope()
-                BottomSheetScaffold(
+                val scaffoldState = rememberScaffoldState()
+                Scaffold(
                     scaffoldState = scaffoldState,
-                    sheetContent = {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(300.dp),
-                            contentAlignment = Center
-                        ) {
-                            Text(text = "Bottom sheet", fontSize = 60.sp)
+                    topBar = {
+                        AppBar {
+                            scope.launch {
+                                scaffoldState.drawerState.open()
+                            }
                         }
                     },
-                    sheetBackgroundColor = Color.Green,
-                    sheetPeekHeight = 0.dp
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Center
-                    ) {
-                        Button(onClick = {
-                            scope.launch {
-                                if (sheetState.isCollapsed) {
-                                    sheetState.expand()
-                                } else {
-                                    sheetState.collapse()
-                                }
+                    drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+                    drawerContent = {
+                        DrawerHeader()
+                        DrawerBody(
+                            items = listOf(
+                                MenuItem(
+                                    id = "home",
+                                    title = "Home",
+                                    contentDescription = "Go to Home Screen",
+                                    icon = Icons.Default.Home
+                                ),
+                                MenuItem(
+                                    id = "settings",
+                                    title = "Settings",
+                                    contentDescription = "Go to Settings Screen",
+                                    icon = Icons.Default.Settings
+                                ),
+                                MenuItem(
+                                    id = "help",
+                                    title = "Help",
+                                    contentDescription = "Get help",
+                                    icon = Icons.Default.Info
+                                ),
+                            ),
+                            onItemClick = {
+                                println("Click on ${it.title}")
                             }
-                        }) {
-                            Text(text = "Bottom sheet fraction: ${sheetState.progress.fraction}")
-                        }
+                        )
                     }
+                ) {
+
                 }
             }
         }
