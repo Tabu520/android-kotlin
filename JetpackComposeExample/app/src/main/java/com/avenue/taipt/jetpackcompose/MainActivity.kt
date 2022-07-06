@@ -18,6 +18,10 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -1037,51 +1041,80 @@ class MainActivity : ComponentActivity() {
 
         //region Navigation Drawer
 
+//        setContent {
+//            NavigationDrawerComposeTheme {
+//                val scope = rememberCoroutineScope()
+//                val scaffoldState = rememberScaffoldState()
+//                Scaffold(
+//                    scaffoldState = scaffoldState,
+//                    topBar = {
+//                        AppBar {
+//                            scope.launch {
+//                                scaffoldState.drawerState.open()
+//                            }
+//                        }
+//                    },
+//                    drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+//                    drawerContent = {
+//                        DrawerHeader()
+//                        DrawerBody(
+//                            items = listOf(
+//                                MenuItem(
+//                                    id = "home",
+//                                    title = "Home",
+//                                    contentDescription = "Go to Home Screen",
+//                                    icon = Icons.Default.Home
+//                                ),
+//                                MenuItem(
+//                                    id = "settings",
+//                                    title = "Settings",
+//                                    contentDescription = "Go to Settings Screen",
+//                                    icon = Icons.Default.Settings
+//                                ),
+//                                MenuItem(
+//                                    id = "help",
+//                                    title = "Help",
+//                                    contentDescription = "Get help",
+//                                    icon = Icons.Default.Info
+//                                ),
+//                            ),
+//                            onItemClick = {
+//                                println("Click on ${it.title}")
+//                            }
+//                        )
+//                    }
+//                ) {
+//
+//                }
+//            }
+//        }
+
+        //endregion
+
+        //region Lazy Grid
+
         setContent {
-            NavigationDrawerComposeTheme {
-                val scope = rememberCoroutineScope()
-                val scaffoldState = rememberScaffoldState()
-                Scaffold(
-                    scaffoldState = scaffoldState,
-                    topBar = {
-                        AppBar {
-                            scope.launch {
-                                scaffoldState.drawerState.open()
+            LazyVerticalGridComposeTheme {
+                val state = rememberLazyGridState(
+                    initialFirstVisibleItemIndex = 99
+                )
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(100.dp),
+                    state = state,
+                    content = {
+                        items(100) { i ->
+                            Box(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .aspectRatio(1f)
+                                    .clip(RoundedCornerShape(5.dp))
+                                    .background(Color.Green),
+                                contentAlignment = Center
+                            ) {
+                                Text(text = "Item $i")
                             }
                         }
-                    },
-                    drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-                    drawerContent = {
-                        DrawerHeader()
-                        DrawerBody(
-                            items = listOf(
-                                MenuItem(
-                                    id = "home",
-                                    title = "Home",
-                                    contentDescription = "Go to Home Screen",
-                                    icon = Icons.Default.Home
-                                ),
-                                MenuItem(
-                                    id = "settings",
-                                    title = "Settings",
-                                    contentDescription = "Go to Settings Screen",
-                                    icon = Icons.Default.Settings
-                                ),
-                                MenuItem(
-                                    id = "help",
-                                    title = "Help",
-                                    contentDescription = "Get help",
-                                    icon = Icons.Default.Info
-                                ),
-                            ),
-                            onItemClick = {
-                                println("Click on ${it.title}")
-                            }
-                        )
-                    }
-                ) {
-
-                }
+                    })
             }
         }
 
