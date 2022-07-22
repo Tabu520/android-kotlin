@@ -5,14 +5,13 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.taipt.pokedex.data.models.PokedexListEntry
 import com.taipt.pokedex.repository.PokemonRepository
 import com.taipt.pokedex.utils.Constants.PAGE_SIZE
-import com.taipt.pokedex.utils.Resouce
+import com.taipt.pokedex.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,7 +69,7 @@ class PokemonListViewModel @Inject constructor(
         viewModelScope.launch {
             val result = repository.getPokemonList(PAGE_SIZE, curPage * PAGE_SIZE)
             when (result) {
-                is Resouce.Success -> {
+                is Resource.Success -> {
                     endReached.value = curPage * PAGE_SIZE >= result.data!!.count
                     val pokedexEntries = result.data.results.mapIndexed { index, entry ->
                         val number = if (entry.url.endsWith("/")) {
@@ -95,7 +94,7 @@ class PokemonListViewModel @Inject constructor(
                     isLoading.value = false
                     pokemonList.value += pokedexEntries
                 }
-                is Resouce.Error -> {
+                is Resource.Error -> {
                     loadError.value = result.message!!
                     isLoading.value = false
                 }
