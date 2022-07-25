@@ -6,7 +6,6 @@ import taipt4.kotlin.mvvmnoteapp.feature_note.domain.model.Note
 import taipt4.kotlin.mvvmnoteapp.feature_note.domain.repository.NoteRepository
 import taipt4.kotlin.mvvmnoteapp.feature_note.domain.util.NoteOrder
 import taipt4.kotlin.mvvmnoteapp.feature_note.domain.util.OrderType
-import java.util.*
 
 class GetNotes(private val repository: NoteRepository) {
 
@@ -17,14 +16,14 @@ class GetNotes(private val repository: NoteRepository) {
             when (noteOrder.orderType) {
                 is OrderType.Ascending -> {
                     when (noteOrder) {
-                        is NoteOrder.Title -> notes.sortedBy { it.title.lowercase(Locale.getDefault()) }
+                        is NoteOrder.Title -> notes.sortedBy { it.title.lowercase() }
                         is NoteOrder.Date -> notes.sortedBy { it.timeStamp }
                         is NoteOrder.Color -> notes.sortedBy { it.color }
                     }
                 }
                 is OrderType.Descending -> {
                     when (noteOrder) {
-                        is NoteOrder.Title -> notes.sortedByDescending { it.title.lowercase(Locale.getDefault()) }
+                        is NoteOrder.Title -> notes.sortedByDescending { it.title.lowercase() }
                         is NoteOrder.Date -> notes.sortedByDescending { it.timeStamp }
                         is NoteOrder.Color -> notes.sortedByDescending { it.color }
                     }
