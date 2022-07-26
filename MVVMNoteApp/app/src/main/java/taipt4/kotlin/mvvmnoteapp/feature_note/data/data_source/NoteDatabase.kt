@@ -1,8 +1,11 @@
 package taipt4.kotlin.mvvmnoteapp.feature_note.data.data_source
 
+import androidx.room.Database
 import androidx.room.RoomDatabase
+import taipt4.kotlin.mvvmnoteapp.feature_note.domain.model.Note
 
-abstract class NoteDatabase: RoomDatabase() {
+@Database(entities = [Note::class], version = 1, exportSchema = false)
+abstract class NoteDatabase : RoomDatabase() {
 
     abstract val noteDao: NoteDao
 

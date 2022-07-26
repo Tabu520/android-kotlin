@@ -1,12 +1,62 @@
 package taipt4.kotlin.mvvmnoteapp.feature_note.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import taipt4.kotlin.mvvmnoteapp.R
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import dagger.hilt.android.AndroidEntryPoint
+import taipt4.kotlin.mvvmnoteapp.feature_note.domain.util.Screen
+import taipt4.kotlin.mvvmnoteapp.feature_note.presentation.add_edit_note.AddEditNoteScreen
+import taipt4.kotlin.mvvmnoteapp.feature_note.presentation.notes.NotesScreen
+import taipt4.kotlin.mvvmnoteapp.ui.theme.CleanArchitectureNoteAppTheme
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContent {
+            CleanArchitectureNoteAppTheme {
+                Surface(
+                    color = MaterialTheme.colors.background
+                ) {
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.NotesScreen.route
+                    ) {
+                        composable(route = Screen.NotesScreen.route) {
+                            NotesScreen(navController = navController)
+                        }
+                        composable(
+                            route = Screen.AddEditNoteScreen.route +
+                                    "?noteId={noteId}&noteColor={noteColor}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "noteId"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                                navArgument(
+                                    name = "noteColor"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                            )
+                        ) {
+                            val color = it.arguments?.getInt("noteColor") ?: -1
+                            AddEditNoteScreen(navController = navController, noteColor = color)
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -9,10 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import taipt4.kotlin.mvvmnoteapp.feature_note.data.data_source.NoteDatabase
 import taipt4.kotlin.mvvmnoteapp.feature_note.data.repository.NoteRepositoryImpl
 import taipt4.kotlin.mvvmnoteapp.feature_note.domain.repository.NoteRepository
-import taipt4.kotlin.mvvmnoteapp.feature_note.domain.use_case.AddNote
-import taipt4.kotlin.mvvmnoteapp.feature_note.domain.use_case.DeleteNote
-import taipt4.kotlin.mvvmnoteapp.feature_note.domain.use_case.GetNotes
-import taipt4.kotlin.mvvmnoteapp.feature_note.domain.use_case.NoteUseCases
+import taipt4.kotlin.mvvmnoteapp.feature_note.domain.use_case.*
 import javax.inject.Singleton
 
 @Module
@@ -41,7 +38,8 @@ object AppModule {
         return NoteUseCases(
             getNotes = GetNotes(repository),
             deleteNote = DeleteNote(repository),
-            addNote = AddNote(repository)
+            addNote = AddNote(repository),
+            getNote = GetNote(repository)
         )
     }
 }

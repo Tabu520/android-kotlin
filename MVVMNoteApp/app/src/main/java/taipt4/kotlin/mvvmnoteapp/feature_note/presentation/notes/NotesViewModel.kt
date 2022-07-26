@@ -21,7 +21,7 @@ class NotesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = mutableStateOf(NoteState())
-    private val state: State<NoteState> = _state
+    val state: State<NoteState> = _state
 
     private var recentlyDeletedNote: Note? = null
 
