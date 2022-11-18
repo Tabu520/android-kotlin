@@ -1,7 +1,7 @@
 package com.taipt.tiktokdownloaderapp.data.model
 
 data class TikTokVideoResponse(
-    var code: String,
+    var code: Int,
     var msg: String,
-    var mp3TikLink: TikTokVideo?
+    var data: TikTokVideo?
 )

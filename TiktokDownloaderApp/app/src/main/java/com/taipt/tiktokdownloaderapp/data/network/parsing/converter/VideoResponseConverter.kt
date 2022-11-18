@@ -1,6 +1,6 @@
 package com.taipt.tiktokdownloaderapp.data.network.parsing.converter
 
-import com.taipt.extractaudio.network.response.VideoResponse
+import com.taipt.tiktokdownloaderapp.data.network.response.VideoResponse
 import okhttp3.ResponseBody
 
 class VideoResponseConverter : ParsingExceptionThrowingConverter<VideoResponse>() {

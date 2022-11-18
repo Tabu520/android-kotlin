@@ -1,3 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Mp3Tik</string>
+    <string name="tiktok_download_video">Tiktok Download Video</string>
+    <string name="download">Download</string>
+    <string name="downloaded_videos">Downloaded Videos</string>
+    <string name="help">Help</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="downloading">Downloading…</string>
+    <string name="show_information">Show Information</string>
+    <string name="tiktok_link">Tiktok Link</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="rate_app">Rate app</string>
+    <string name="vietnamese">Tiếng Việt</string>
+    <string name="english">English</string>
+    <string name="rate_app_description">Please give our app 5 stars if you like it and write a short review</string>
+    <string name="later">Later</string>
+    <string name="rate_the_app">Rate the App</string>
+    <string name="share_with_friends">Share with friends</string>
+    <string name="faq">FAQ</string>
+    <string name="feedback">Feedback</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="language">Language</string>
+
+    <string name="how_to_download">How to download a TikTok Video?</string>
+    <string name="how_to_download_content">"""
+                1. Open TikTok App
+                2. Choose the video which you want to download
+                3. Tap "Share" icon and find "Copy Link"
+                4. Paste the link in our app and press "Download"
+            """</string>
+    <string name="cant_find_video">Where is my downloaded video saved? I can\'t find it</string>
+    <string name="cant_find_video_content">"""
+                You should see your video in Gallery.
+                If you can't find it, use FileManager and search files which begin with "TiktokVideo".
+            """</string>
+    <string name="downloading_does_not_work">Downloading does not work. Why?</string>
+    <string name="downloading_does_not_work_content">"""
+                There are several reasons:
+                 - Video is private. Private videos can't be downloaded.
+                 - Video is restricted by country.
+                 - There are problems with TikTok servers. Try download later.
+            """</string>
+    <string name="video_has_watermark">Downloaded video has a watermark. Why?</string>
+    <string name="video_has_watermark_content">"""
+                Some videos were downloaded by users with watermark and then re-uploaded again.
+                Those videos have a watermark and we can't do anything with them.
+            """</string>
+    <string name="cant_play_video">I can\'t play the downloaded video. Why?</string>
+    <string name="cant_play_video_content">"""
+                Some videos require HD codec and can't be played by default player.
+                Please use VLC media player or other apps.
+            """</string>
+    <string name="download_mp3">Download MP3</string>
+    <string name="download_without_watermark">Download without watermark</string>
+    <string name="mp3">Mp3</string>
+    <string name="tik">Tik</string>
+
 </resources>

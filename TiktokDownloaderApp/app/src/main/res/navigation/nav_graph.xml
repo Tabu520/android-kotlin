@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/downloadFragment2">
 
+    <action
+        android:id="@+id/action_global_trackingFragment"
+        app:destination="@id/downloadFragment2"
+        app:launchSingleTop="true" />
+
+    <fragment
+        android:id="@+id/downloadFragment2"
+        android:name="com.taipt.tiktokdownloaderapp.ui.fragments.DownloadFragment"
+        tools:layout="@layout/fragment_download" >
+        <action
+            android:id="@+id/action_downloadFragment2_to_videosFragment"
+            app:destination="@id/videosFragment" />
+        <action
+            android:id="@+id/action_downloadFragment2_to_faqFragment"
+            app:destination="@id/faqFragment" />
+        <action
+            android:id="@+id/action_downloadFragment2_to_languageFragment"
+            app:destination="@id/languageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/helpFragment2"
+        android:name="com.taipt.tiktokdownloaderapp.ui.fragments.HelpFragment"
+        android:label="@string/help"
+        tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/faqFragment"
+        android:name="com.taipt.tiktokdownloaderapp.ui.fragments.FaqFragment"
+        android:label="@string/faq"
+        tools:layout="@layout/fragment_faq" />
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="com.taipt.tiktokdownloaderapp.ui.fragments.VideosFragment"
+        android:label="@string/downloaded_videos"
+        tools:layout="@layout/fragment_videos" />
+    <fragment
+        android:id="@+id/languageFragment"
+        android:name="com.taipt.tiktokdownloaderapp.ui.fragments.LanguageFragment"
+        android:label="@string/language"
+        tools:layout="@layout/fragment_language" />
 </navigation>

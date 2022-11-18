@@ -1,32 +1,35 @@
 package com.taipt.tiktokdownloaderapp.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.taipt.tiktokdownloaderapp.R
+import com.taipt.tiktokdownloaderapp.databinding.FragmentLanguageBinding
+import com.taipt.tiktokdownloaderapp.settings.LocaleHelper
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LanguageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class LanguageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class LanguageFragment : Fragment(R.layout.fragment_language) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    interface LanguageFragmentListener {
+        fun onSettingLanguageDone(language: String)
+    }
+
+    private var _binding: FragmentLanguageBinding? = null
+    private val binding get() = _binding!!
+
+    private var listener: LanguageFragmentListener? = null
+    private var localeHelper: LocaleHelper? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        localeHelper = LocaleHelper(requireContext())
+        if (context is LanguageFragmentListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement LanguageFragmentListener")
         }
     }
 
@@ -34,27 +37,43 @@ class LanguageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_language, container, false)
+        _binding = FragmentLanguageBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LanguageFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LanguageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (localeHelper?.getLanguage().equals("ko")) {
+            binding.ibVi.visibility = View.VISIBLE
+            binding.ibEn.visibility = View.INVISIBLE
+        } else {
+            binding.ibVi.visibility = View.INVISIBLE
+            binding.ibEn.visibility = View.VISIBLE
+        }
+        binding.llVietnamese.setOnClickListener {
+            var language = "ko"
+            binding.ibVi.visibility = View.VISIBLE
+            binding.ibEn.visibility = View.INVISIBLE
+            localeHelper?.setNewLocale(requireContext(), language)
+            listener?.onSettingLanguageDone(language)
+        }
+
+        binding.llEnglish.setOnClickListener {
+            var language = "en"
+            binding.ibVi.visibility = View.INVISIBLE
+            binding.ibEn.visibility = View.VISIBLE
+            localeHelper?.setNewLocale(requireContext(), language)
+            listener?.onSettingLanguageDone(language)
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

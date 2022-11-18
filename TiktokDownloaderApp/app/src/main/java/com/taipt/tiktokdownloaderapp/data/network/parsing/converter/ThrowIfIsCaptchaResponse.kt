@@ -1,6 +1,6 @@
 package com.taipt.tiktokdownloaderapp.data.network.parsing.converter
 
-import com.taipt.extractaudio.network.exceptions.CaptchaRequiredException
+import com.taipt.tiktokdownloaderapp.data.network.exceptions.CaptchaRequiredException
 import kotlin.jvm.Throws
 
 class ThrowIfIsCaptchaResponse {

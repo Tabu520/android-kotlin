@@ -1,3 +1,5 @@
 package com.taipt.tiktokdownloaderapp.data.model
 
-data class VideoInPending()
+import java.util.*
+
+data class VideoInPending(val id: String, val url: String)

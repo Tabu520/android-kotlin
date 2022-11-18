@@ -1,3 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Mp3Tik</string>
+    <string name="tiktok_download_video">Tiktok Download Video</string>
+    <string name="download">Tải xuống</string>
+    <string name="downloaded_videos">Video đã tải xuống</string>
+    <string name="help">Trợ giúp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="downloading">Đang tải xuống…</string>
+    <string name="show_information">Hiển thị thông tin</string>
+    <string name="tiktok_link">Tiktok Link</string>
+    <string name="open">Mở</string>
+    <string name="close">Đóng</string>
+    <string name="rate_app">Đánh giá ứng dụng</string>
+    <string name="vietnamese">Tiếng Việt</string>
+    <string name="english">English</string>
+    <string name="rate_app_description">Hãy đánh giá 5 sao nếu bạn hài lòng với ứng dụng.</string>
+    <string name="later">Để sau</string>
+    <string name="rate_the_app">Đánh giá ứng dụng</string>
+    <string name="share_with_friends">Chia sẻ với bạn bè</string>
+    <string name="faq">Hỏi đáp</string>
+    <string name="feedback">Phản hồi</string>
+    <string name="privacy_policy">Chính sách bảo mât</string>
+    <string name="language">Ngôn ngữ</string>
+
+    <string name="how_to_download">Làm sao để tải xuống một video TikTok?</string>
+    <string name="how_to_download_content">"""
+                1. Mở ứng dụng TikTok.
+                2. Chọn video mà bạn muốn tải về.
+                3. Chọn "Chia sẻ" icon và tìm nút "Copy đường dẫn"
+                4. Dán đường dẫn vào ứng dụng và nhấn "Hiển thị thông tin" sau đó nhấn "Tải về"
+            """</string>
+    <string name="cant_find_video">Video đã tải về được lưu ở đâu? Tôi không thể tìm thấy chúng</string>
+    <string name="cant_find_video_content">"""
+                Bạn có thể thấy video trong Thư viện.
+                Nếu bạn không thể tìm thấy nó, sử dụng Quản lý tập tin và tìm những file bắt đầu với "TiktokVideo".
+            """</string>
+    <string name="downloading_does_not_work">Tại sao không thể thực hiện việc tải về?</string>
+    <string name="downloading_does_not_work_content">"""
+                Có một vài lý do:
+                 - Video ở trạng thái riêng tư nên không thể tải về được.
+                 - Video bị hạn chế bởi quốc gia.
+                 - Có một vài vấn đề với máy chủ của TikTok. Hãy thử tải về sau.
+            """</string>
+    <string name="video_has_watermark">Tại sao video tải về có Watermark (Chữ ký trên video)?</string>
+    <string name="video_has_watermark_content">"""
+                Một vài video được tải về bởi người dùng có sẵn watermark vả được tải lên một lần nữa.
+                Những video đó có sẵn watermark và chúng ta không thể làm gì với chúng.
+            """</string>
+    <string name="cant_play_video">Tại sao không thể chơi video được?</string>
+    <string name="cant_play_video_content">"""
+                Một số video yêu cầu codec HD và không thể phát bằng trình phát mặc định.
+                Vui lòng sử dụng trình phát phương tiện VLC hoặc các ứng dụng khác.
+            """</string>
+    <string name="download_mp3">Download MP3</string>
+    <string name="download_without_watermark">Download without watermark</string>
+    <string name="mp3">Mp3</string>
+    <string name="tik">Tik</string>
+
 </resources>

@@ -1,3 +1,5 @@
 package com.taipt.tiktokdownloaderapp.data.model
 
-data class InfoPage()
+data class InfoPage(
+    var pageName: String?
+)

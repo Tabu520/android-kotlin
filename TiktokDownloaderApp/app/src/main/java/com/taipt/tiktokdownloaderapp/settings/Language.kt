@@ -1,4 +1,4 @@
-package com.taipt.tiktokdownloaderapp.utils
+package com.taipt.tiktokdownloaderapp.settings
 
 import java.util.Locale
 

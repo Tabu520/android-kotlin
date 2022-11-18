@@ -1,4 +1,4 @@
-package org.fnives.tiktokdownloader.data.local.save.video
+package com.taipt.tiktokdownloaderapp.data.local.save.video
 
 import android.content.ContentResolver
 import android.os.Build
@@ -6,15 +6,16 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.provider.MediaStore.Video.Media
 import androidx.annotation.RequiresApi
-import org.fnives.tiktokdownloader.data.model.VideoInSavingIntoFile
+import com.taipt.tiktokdownloaderapp.data.model.VideoInSavingIntoFile
 import java.io.FileOutputStream
 
 class SaveVideoFileApi29(private val resolver: ContentResolver) : SaveVideoFile {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun invoke(directory: String, fileName: String, videoInProcess: VideoInSavingIntoFile): String? {
+        val finalFileName = "TiktokVideo_$fileName"
         val values = buildDefaultVideoContentValues(
-            fileName = fileName,
+            fileName = finalFileName,
             contentType = videoInProcess.contentType?.toString()
         ) {
             put(Media.RELATIVE_PATH, Environment.DIRECTORY_MOVIES + "/" + directory)

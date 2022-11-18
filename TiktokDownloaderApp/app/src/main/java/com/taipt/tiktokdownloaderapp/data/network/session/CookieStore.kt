@@ -1,4 +1,4 @@
-package com.taipt.extractaudio.network.session
+package com.taipt.tiktokdownloaderapp.data.network.session
 
 interface CookieStore {
 

@@ -1,7 +1,7 @@
 package com.taipt.tiktokdownloaderapp.data.network.parsing.converter
 
-import com.taipt.extractaudio.network.exceptions.CaptchaRequiredException
-import com.taipt.extractaudio.network.response.ActualVideoPageUrl
+import com.taipt.tiktokdownloaderapp.data.network.exceptions.CaptchaRequiredException
+import com.taipt.tiktokdownloaderapp.data.network.response.ActualVideoPageUrl
 import okhttp3.ResponseBody
 
 class ActualVideoPageUrlConverter(

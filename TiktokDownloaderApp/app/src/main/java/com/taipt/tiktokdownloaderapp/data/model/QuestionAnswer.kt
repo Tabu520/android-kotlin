@@ -1,3 +1,7 @@
 package com.taipt.tiktokdownloaderapp.data.model
 
-data class QuestionAnwser()
+data class QuestionAnswer(
+    val question: String,
+    val answer: String,
+    var isExpanded: Boolean
+)

@@ -4,9 +4,9 @@ import com.taipt.tiktokdownloaderapp.data.network.parsing.converter.ActualVideoP
 import com.taipt.tiktokdownloaderapp.data.network.parsing.converter.ThrowIfIsCaptchaResponse
 import com.taipt.tiktokdownloaderapp.data.network.parsing.converter.VideoFileUrlConverter
 import com.taipt.tiktokdownloaderapp.data.network.parsing.converter.VideoResponseConverter
-import com.taipt.extractaudio.network.response.ActualVideoPageUrl
-import com.taipt.extractaudio.network.response.VideoFileUrl
-import com.taipt.extractaudio.network.response.VideoResponse
+import com.taipt.tiktokdownloaderapp.data.network.response.ActualVideoPageUrl
+import com.taipt.tiktokdownloaderapp.data.network.response.VideoFileUrl
+import com.taipt.tiktokdownloaderapp.data.network.response.VideoResponse
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit

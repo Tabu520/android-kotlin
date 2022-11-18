@@ -1,60 +1,89 @@
 package com.taipt.tiktokdownloaderapp.ui.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.viewModels
 import com.taipt.tiktokdownloaderapp.R
+import com.taipt.tiktokdownloaderapp.data.model.VideoInPending
+import com.taipt.tiktokdownloaderapp.databinding.FragmentDownloadBinding
+import com.taipt.tiktokdownloaderapp.ui.viewmodels.MainViewModel
+import com.taipt.tiktokdownloaderapp.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class DownloadFragment : Fragment(R.layout.fragment_download) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DownloadFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DownloadFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentDownloadBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val mainViewModel: MainViewModel by viewModels()
+
+    private lateinit var videoInPending: VideoInPending
+    private lateinit var dialog: AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_download, container, false)
+        _binding = FragmentDownloadBinding.inflate(inflater, container, false)
+        return  binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DownloadFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DownloadFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.edtInputUrl.doAfterTextChanged {
+            if (it.toString().isNotBlank() && it.toString().contains("tiktok")) {
+                binding.btnShowInfo.isEnabled = true
+                videoInPending = VideoInPending(UUID.randomUUID().toString(), it.toString())
+            }
+        }
+        binding.btnShowInfo.setOnClickListener {
+            binding.cvInformation.visibility = View.VISIBLE
+        }
+        binding.btnDownloadVideo.setOnClickListener {
+            mainViewModel.downloadVideo(videoInPending)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mainViewModel.videoSaveToFileMutableLiveData.observe(viewLifecycleOwner) { response ->
+            when(response) {
+                is Resource.Loading -> {
+                    showLoadingDialog()
+                }
+                is Resource.Success -> {
+                    dismissLoadingDialog()
+                }
+                is Resource.Error -> {
+                    dismissLoadingDialog()
                 }
             }
+        }
+    }
+
+    private fun showLoadingDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setCancelable(false)
+        builder.setView(R.layout.layout_loading_dialog)
+        dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun dismissLoadingDialog() {
+        if (dialog.isShowing) {
+            dialog.dismiss()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

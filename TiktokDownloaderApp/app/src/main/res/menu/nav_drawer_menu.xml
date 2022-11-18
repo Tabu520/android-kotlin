@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  
+    <item
+        android:id="@+id/rate_the_app"
+        android:icon="@drawable/ic_outline_star_outline_24"
+        android:title="@string/rate_the_app" />
+    <item
+        android:id="@+id/share_with_friends"
+        android:icon="@drawable/ic_outline_person_add_alt_24"
+        android:title="@string/share_with_friends"/>
+    <item
+        android:id="@id/faqFragment"
+        android:icon="@drawable/ic_outline_question_answer_24"
+        android:title="@string/faq"/>
+    <item
+        android:id="@+id/feedback"
+        android:icon="@drawable/ic_outline_feedback_24"
+        android:title="@string/feedback"/>
+    <item
+        android:id="@+id/privacy_policy"
+        android:icon="@drawable/ic_outline_policy_24"
+        android:title="@string/privacy_policy"/>
+    <item
+        android:id="@+id/languageFragment"
+        android:icon="@drawable/ic_baseline_language_24"
+        android:title="@string/language"/>
 </menu>

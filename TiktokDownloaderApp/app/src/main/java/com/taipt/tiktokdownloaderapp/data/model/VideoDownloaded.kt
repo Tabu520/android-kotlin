@@ -1,4 +1,3 @@
 package com.taipt.tiktokdownloaderapp.data.model
 
-class VideoDownloaded {
-}
+data class VideoDownloaded(val id: String, val url: String, val uri: String)

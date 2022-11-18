@@ -1,4 +1,4 @@
-package com.taipt.extractaudio.network.response
+package com.taipt.tiktokdownloaderapp.data.network.response
 
 import okhttp3.MediaType
 import java.io.InputStream

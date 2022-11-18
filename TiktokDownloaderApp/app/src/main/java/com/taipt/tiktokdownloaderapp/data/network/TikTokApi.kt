@@ -1,8 +1,8 @@
 package com.taipt.tiktokdownloaderapp.data.network
 
-import com.taipt.extractaudio.network.response.ActualVideoPageUrl
-import com.taipt.extractaudio.network.response.VideoFileUrl
-import com.taipt.extractaudio.network.response.VideoResponse
+import com.taipt.tiktokdownloaderapp.data.network.response.ActualVideoPageUrl
+import com.taipt.tiktokdownloaderapp.data.network.response.VideoFileUrl
+import com.taipt.tiktokdownloaderapp.data.network.response.VideoResponse
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Url
@@ -45,4 +45,6 @@ interface TikTokApi {
     )
     @GET
     suspend fun getVideo(@Url videoUrl: String): VideoResponse
+
+
 }
