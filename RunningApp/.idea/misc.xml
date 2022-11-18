@@ -24,6 +24,23 @@
         <entry key="..\:/OtherProject/RunningApp/app/src/main/res/layout/marker_view.xml" value="0.33489583333333334" />
         <entry key="..\:/OtherProject/RunningApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.32083333333333336" />
         <entry key="..\:/OtherProject/RunningApp/app/src/main/res/menu/toolbar_tracking_menu.xml" value="0.33489583333333334" />
+        <entry key="app/src/main/res/drawable/bottom_nav_selector.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/ic_add_black.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/ic_close_white.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/ic_directions_run_black_24dp.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/ic_graph.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/ic_run.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/ic_settings.xml" value="0.2725" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.346875" />
+        <entry key="app/src/main/res/layout/fragment_run.xml" value="0.346875" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.346875" />
+        <entry key="app/src/main/res/layout/fragment_setup.xml" value="0.346875" />
+        <entry key="app/src/main/res/layout/fragment_statistics.xml" value="0.346875" />
+        <entry key="app/src/main/res/layout/item_run.xml" value="0.346875" />
+        <entry key="app/src/main/res/layout/marker_view.xml" value="0.346875" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.346875" />
+        <entry key="app/src/main/res/menu/toolbar_tracking_menu.xml" value="0.346875" />
       </map>
     </option>
   </component>
